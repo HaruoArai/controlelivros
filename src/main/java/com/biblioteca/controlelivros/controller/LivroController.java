@@ -20,4 +20,10 @@ public class LivroController {
         // Retorna o arquivo index.html da pasta templates
         return "index";
     }
+
+    //formulário
+    @GetMapping("/form")
+    public String form() {
+        return "form";
+    }
 }

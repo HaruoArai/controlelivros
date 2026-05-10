@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastrar Livro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">📚</span>
+        <div>
+          <h1 class="logo-title">Biblioteca</h1>
+          <span class="logo-sub">Sistema de Controle de Livros</span>
+        </div>
+      </div>
+      <nav class="header-nav">
+        <a href="/" class="nav-link">Acervo</a>
+        <a href="/form" class="btn-primary active-btn">+ Novo Livro</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+
+    <section class="form-section">
+      <div class="form-container">
+
+        <div class="form-heading">
+          <a href="/" class="back-link">← Voltar ao acervo</a>
+          <h2 class="form-title">Cadastrar <em>Novo Livro</em></h2>
+          <p class="form-desc">Preencha os campos abaixo para adicionar um livro ao acervo.</p>
+        </div>
+
+        <form class="livro-form" action="/livros/salvar" method="post">
+
+          <div class="form-grid">
+
+            <div class="form-group full-width">
+              <label for="titulo" class="form-label">Título <span class="required">*</span></label>
+              <input
+                type="text"
+                id="titulo"
+                name="titulo"
+                class="form-input"
+                placeholder="Ex: Dom Casmurro"
+                required
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="autor" class="form-label">Autor <span class="required">*</span></label>
+              <input
+                type="text"
+                id="autor"
+                name="autor"
+                class="form-input"
+                placeholder="Ex: Machado de Assis"
+                required
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="genero" class="form-label">Gênero <span class="required">*</span></label>
+              <select id="genero" name="genero" class="form-input form-select" required>
+                <option value="" disabled selected>Selecione um gênero</option>
+                <option value="Romance">Romance</option>
+                <option value="Ficção Científica">Ficção Científica</option>
+                <option value="Fantasia">Fantasia</option>
+                <option value="Naturalismo">Naturalismo</option>
+                <option value="Realismo">Realismo</option>
+                <option value="Poesia">Poesia</option>
+                <option value="Biografia">Biografia</option>
+                <option value="Conto">Conto</option>
+                <option value="Drama">Drama</option>
+                <option value="Outro">Outro</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="ano" class="form-label">Ano de Publicação <span class="required">*</span></label>
+              <input
+                type="number"
+                id="ano"
+                name="ano"
+                class="form-input"
+                placeholder="Ex: 1899"
+                min="1000"
+                max="9999"
+                required
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="isbn" class="form-label">ISBN</label>
+              <input
+                type="text"
+                id="isbn"
+                name="isbn"
+                class="form-input"
+                placeholder="Ex: 978-85-359-0277-5"
+              >
+            </div>
+
+          </div>
+
+          <div class="form-actions">
+            <a href="/" class="btn-secondary">Cancelar</a>
+            <button type="submit" class="btn-submit">
+              <span>Salvar Livro</span>
+              <span class="btn-icon">→</span>
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+      <!-- Decoração lateral -->
+      <div class="form-deco">
+        <div class="deco-card">
+          <div class="deco-spine"></div>
+          <div class="deco-content">
+            <p class="deco-quote">"Um livro é um sonho que você segura nas mãos."</p>
+            <span class="deco-author">— Neil Gaiman</span>
+          </div>
+        </div>
+        <div class="deco-tip">
+          <strong>💡 Dica:</strong> O ISBN pode ser encontrado na contracapa ou lombada do livro.
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>Sistema de Controle de Livros &mdash; Spring Boot MVC &copy; 2026</p>
+  </footer>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>
