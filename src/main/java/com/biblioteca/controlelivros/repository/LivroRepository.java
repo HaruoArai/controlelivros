@@ -6,7 +6,7 @@ import com.biblioteca.controlelivros.model.Livro;
 // Importa a interface JpaRepository do Spring Data JPA
 import org.springframework.data.jpa.repository.JpaRepository;
 
-// Interface responsável pela comunicação com o banco de dados
+// Interface responsável pela comunicação com o banco de dados que estende ao Jpa. Livro é a classe que estamos tratando. Long é o identificador, no caso, tipo do Id que é um Long.
 public interface LivroRepository extends JpaRepository<Livro, Long> {
 
     // JpaRepository já fornece métodos prontos como:

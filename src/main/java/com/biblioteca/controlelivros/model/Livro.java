@@ -3,13 +3,15 @@ package com.biblioteca.controlelivros.model;
 // Importa as anotações do JPA para integração com banco
 import jakarta.persistence.*;
 
-// Define que essa classe será uma tabela no banco de dados
+// Annotation Entity faz com que toda essa classe seja persistida na camada de repository que vai, por sua vez, se conectar com o banco de dados.
 @Entity
+// Nome da tabela.
+@Table(name = "tabela_livros")
 public class Livro {
-    // Define o atributo id como chave primária
+    // Faz Id ser gerado automaticamente
     @Id
 
-    // Faz o id ser gerado automaticamente
+    // Estratégia para gerar o Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -20,11 +22,13 @@ public class Livro {
     private int ano;
     private String isbn;
 
-    //construtor vazio
+
+
+    // Construtor vazio
     public Livro() {
     }
 
-    //construtor com parâmetros
+    // Construtor com parâmetros
     public Livro(Long id, String titulo, String autor, String genero, int ano, String isbn) {
         this.id=id;
         this.titulo=titulo;
@@ -34,7 +38,7 @@ public class Livro {
         this.isbn =isbn;
     }
 
-    //Getter para retornar valores e Setter para alterar os valores
+    // Getter para retornar valores e Setter para alterar os valores
     public Long getId() {
         return id;
     }
