@@ -342,11 +342,19 @@ body {
   font-weight: 500;
 }
 
-.badge-romance { background: #fde8e8; color: var(--red); }
-.badge-naturalismo { background: #e8f5e9; color: var(--green); }
-.badge-ficcao { background: #e8f0fe; color: var(--blue); }
-.badge-fantasia { background: #f3e8fd; color: var(--purple); }
-.badge-poesia { background: #fff8e1; color: var(--brown); }
+.badge-romance           { background: #fde8e8; color: #c0392b; }
+.badge-ficcao-cientifica { background: #e8f0fe; color: #2980b9; }
+.badge-ficcao-distopica  { background: #e8f0fe; color: #044971; }
+.badge-fantasia          { background: #f3e8fd; color: #8e44ad; }
+.badge-naturalismo       { background: #e8f5e9; color: #27ae60; }
+.badge-realismo          { background: #e8f4f8; color: #2471a3; }
+.badge-poesia            { background: #fff8e1; color: #b7770d; }
+.badge-biografia         { background: #fef9e7; color: #9a7d0a; }
+.badge-conto             { background: #fde8f5; color: #a93278; }
+.badge-drama             { background: #fdf2e9; color: #ca6f1e; }
+.badge-suspense          { background: #eaecee; color: #424949; }
+.badge-terror            { background: #f2f3f4; color: #1a1510; }
+.badge-outro             { background: #f0f0f0; color: #717d7e; }
 
 /* Botões de ação */
 .td-acoes {

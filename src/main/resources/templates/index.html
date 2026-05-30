@@ -170,8 +170,26 @@
 
                     <td th:text="${livro.autor}"></td>
 
+                    <!-- Criei um switch para tratar "ç", "ã" e "í" no CSS -->
                     <td>
-                        <span class="badge" th:text="${livro.genero}"></span>
+                        <span th:switch="${livro.genero}">
+
+                            <span th:case="'Ficção Científica'"
+                                  class="badge badge-ficcao-cientifica"
+                                  th:text="${livro.genero}">
+                            </span>
+
+                            <span th:case="'Ficção Distópica'"
+                                  class="badge badge-ficcao-distopica"
+                                  th:text="${livro.genero}">
+                            </span>
+
+                            <span th:case="*"
+                                  th:class="'badge badge-' + ${#strings.toLowerCase(livro.genero)}"
+                                  th:text="${livro.genero}">
+                            </span>
+
+                        </span>
                     </td>
 
                     <td th:text="${livro.ano}"></td>
