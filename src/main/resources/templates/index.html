@@ -28,6 +28,12 @@
 
 <main class="main-content">
 
+<div
+        th:if="${mensagemSucesso}"
+        class="alert alert-success"
+        th:text="${mensagemSucesso}">
+</div>
+
     <section class="page-hero">
         <div class="hero-text">
             <h2 class="hero-title">Acervo <em>Digital</em></h2>
@@ -56,10 +62,10 @@
                 <span class="search-icon">🔍</span>
                 <input
                         type="text"
-                        name="titulo"
+                        name="busca"
                         class="search-input"
-                        placeholder="Pesquisar por título..."
-                        th:value="${param.titulo}"
+                        placeholder="Pesquisar por título, autor ou gênero..."
+                        th:value="${param.busca}"
                 >
                 <button type="submit" class="search-btn">Buscar</button>
             </div>
@@ -197,14 +203,17 @@
                     <td class="td-isbn" th:text="${livro.isbn}"></td>
 
                     <td class="td-acoes">
-                        <a href="/form" class="btn-edit" title="Editar">✏️</a>
+                        <a th:href="@{/editar/{id}(id=${livro.id})}"
+                           class="btn-edit">
+                            ✏️
+                        </a>
 
-                        <button
-                                class="btn-delete"
-                                th:onclick="'confirmarExclusao(' + ${livro.id} + ')'"
-                                title="Excluir">
+                        <!-- Teste inicial. Depois é preciso integrar com o modal -->
+                        <a th:href="@{/delete/{id}(id=${livro.id})}"
+                           class="btn-delete"
+                           onclick="return confirm('Deseja realmente excluir este livro?')">
                             🗑️
-                        </button>
+                        </a>
                     </td>
                 </tr>
                 </tbody>

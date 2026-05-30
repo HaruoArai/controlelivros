@@ -47,4 +47,8 @@ public class LivroService {
 
     // método DELETAR
     public void delete(Long id){livroRepository.deleteById(id);}
+
+    public List<Livro> buscar(String busca) {
+        return livroRepository.buscar(busca);
+    }
 }

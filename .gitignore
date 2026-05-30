@@ -30,3 +30,19 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Banco de dados H2
+*.mv.db
+*.trace.db
+
+# Arquivos gerados pelo Maven
+target/
+
+# Arquivos da IDE
+.idea/
+*.iml
+.vscode/
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db

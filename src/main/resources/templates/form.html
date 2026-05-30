@@ -37,16 +37,26 @@
           <p class="form-desc">Preencha os campos abaixo para adicionar um livro ao acervo.</p>
         </div>
 
-        <form class="livro-form" action="/" method="post"> <!--<form class="livro-form" action="/livros/salvar" method="post"> -->
+        <!--<form class="livro-form" action="/livros/salvar" method="post"> -->
+        <!-- <form class="livro-form" action="/" method="post"> -->
+        <form
+          class="livro-form"
+          th:action="@{/}"
+          th:object="${livro}"
+          method="post">
+
+          <!-- input hidden é a peça que permite reutilizar o mesmo forms.html tanto para Cadastrar quanto para Editar-->
+          <input type="hidden" th:field="*{id}">
 
           <div class="form-grid">
 
             <div class="form-group full-width">
               <label for="titulo" class="form-label">Título <span class="required">*</span></label>
+              <!-- Ao abrir para EDITAR, vai manter o nome do título. -->
               <input
                 type="text"
                 id="titulo"
-                name="titulo"
+                th:field="*{titulo}"
                 class="form-input"
                 placeholder="Ex: Dom Casmurro"
                 required
@@ -58,7 +68,7 @@
               <input
                 type="text"
                 id="autor"
-                name="autor"
+                th:field="*{autor}"
                 class="form-input"
                 placeholder="Ex: Machado de Assis"
                 required
@@ -67,8 +77,8 @@
 
             <div class="form-group">
               <label for="genero" class="form-label">Gênero <span class="required">*</span></label>
-              <select id="genero" name="genero" class="form-input form-select" required>
-                <option value="" disabled selected>Selecione um gênero</option>
+              <select id="genero" th:field="*{genero}" class="form-input form-select" required>
+                <option value="">Selecione um gênero</option>
                 <option value="Romance">Romance</option>
                 <option value="Ficção Científica">Ficção Científica</option>
                 <option value="Ficção Distópica">Ficção Distópica</option>
@@ -90,7 +100,7 @@
               <input
                 type="number"
                 id="ano"
-                name="ano"
+                th:field="*{ano}"
                 class="form-input"
                 placeholder="Ex: 1899"
                 min="0"
@@ -104,7 +114,7 @@
               <input
                 type="text"
                 id="isbn"
-                name="isbn"
+                th:field="*{isbn}"
                 class="form-input"
                 placeholder="Ex: 978-85-359-0277-5"
               >

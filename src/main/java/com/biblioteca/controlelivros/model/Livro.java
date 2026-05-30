@@ -16,10 +16,11 @@ public class Livro {
     private Long id;
 
     // Atributos da tabela Livro
+    // Colocar Interger ao invés de Int. Assim o valor inicial será null, não 0. Placeholder agora funciona.
     private String titulo;
     private String autor;
     private String genero;
-    private int ano;
+    private Integer ano;
     private String isbn;
 
 
@@ -29,7 +30,7 @@ public class Livro {
     }
 
     // Construtor com parâmetros
-    public Livro(Long id, String titulo, String autor, String genero, int ano, String isbn) {
+    public Livro(Long id, String titulo, String autor, String genero, Integer ano, String isbn) {
         this.id=id;
         this.titulo=titulo;
         this.autor=autor;
@@ -67,10 +68,10 @@ public class Livro {
         this.genero = genero;
     }
 
-    public int getAno() {
+    public Integer getAno() {
         return ano;
     }
-    public void setAno(int ano) {
+    public void setAno(Integer ano) {
         this.ano = ano;
     }
 
