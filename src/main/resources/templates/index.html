@@ -35,15 +35,16 @@
         </div>
         <div class="hero-stats">
             <div class="stat-card">
-                <span class="stat-num">24</span>
+                <!-- mostra a quantidade real de livros cadastrados -->
+                <span class="stat-num" th:text="${#lists.size(livros)}"></span>
                 <span class="stat-label">Livros</span>
             </div>
             <div class="stat-card">
-                <span class="stat-num">8</span>
+                <span class="stat-num" th:text="${totalAutores}"></span>
                 <span class="stat-label">Autores</span>
             </div>
             <div class="stat-card">
-                <span class="stat-num">5</span>
+                <span class="stat-num" th:text="${totalGeneros}"></span>
                 <span class="stat-label">Gêneros</span>
             </div>
         </div>
@@ -68,7 +69,10 @@
     <section class="table-section">
         <div class="table-header">
             <h3 class="table-title">Todos os Livros</h3>
-            <span class="table-count">24 encontrados</span>
+            <!-- Conta a quantidade de livros encontrados -->
+            <span class="table-count">
+                <span th:text="${#lists.size(livros)}"></span> encontrados
+            </span>
         </div>
 
         <div class="table-wrapper">
@@ -85,7 +89,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <!-- Dados de exemplo para visualização -->
+                <!-- Dados de exemplo para visualização
                 <tr class="table-row">
                     <td class="td-id">01</td>
                     <td class="td-titulo">
@@ -154,6 +158,35 @@
                     <td class="td-acoes">
                         <a href="/form" class="btn-edit" title="Editar">✏️</a>
                         <button class="btn-delete" onclick="confirmarExclusao(5)" title="Excluir">🗑️</button>
+                    </td>
+                </tr> -->
+                <!-- No código abaixo o Thymeleaf vai criar uma linha da tabela para cada livro retornado pelo banco. -->
+                <tr class="table-row" th:each="livro, status : ${livros}">
+                    <td class="td-id" th:text="${status.count}"></td>
+
+                    <td class="td-titulo">
+                        <span class="titulo-text" th:text="${livro.titulo}"></span>
+                    </td>
+
+                    <td th:text="${livro.autor}"></td>
+
+                    <td>
+                        <span class="badge" th:text="${livro.genero}"></span>
+                    </td>
+
+                    <td th:text="${livro.ano}"></td>
+
+                    <td class="td-isbn" th:text="${livro.isbn}"></td>
+
+                    <td class="td-acoes">
+                        <a href="/form" class="btn-edit" title="Editar">✏️</a>
+
+                        <button
+                                class="btn-delete"
+                                th:onclick="'confirmarExclusao(' + ${livro.id} + ')'"
+                                title="Excluir">
+                            🗑️
+                        </button>
                     </td>
                 </tr>
                 </tbody>

@@ -26,6 +26,13 @@ public class LivroController {
     //@ResponseBody // indica que o valor de retorno de um método de controlador deve ser vinculado diretamente ao corpo da resposta HTTP (HTTP response body), e não mapeado para um nome de view (template HTML)
     public String listarLivros (Model model) {
         model.addAttribute("livros", livroService.getAll());
+
+        model.addAttribute("totalAutores",
+                livroService.contarAutores());
+
+        model.addAttribute("totalGeneros",
+                livroService.contarGeneros());
+
         return "index";
     }
 

@@ -21,6 +21,24 @@ public class LivroService {
     // método LISTAR
     public List<Livro> getAll () {return livroRepository.findAll();}
 
+    // CONTAR AUTORES ÚNICOS
+    public long contarAutores() {
+        return livroRepository.findAll()
+                .stream()
+                .map(Livro::getAutor)
+                .distinct()
+                .count();
+    }
+
+    // CONTAR GÊNEROS ÚNICOS
+    public long contarGeneros() {
+        return livroRepository.findAll()
+                .stream()
+                .map(Livro::getGenero)
+                .distinct()
+                .count();
+    }
+
     // BUSCAR POR ID
     public Livro getById(Long id) {return livroRepository.findById(id).orElse(null);}
 
