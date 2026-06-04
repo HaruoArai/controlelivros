@@ -53,8 +53,7 @@ public class LivroController {
         return "form";
     }
 
-    @PostMapping // Requisição para postar/mandar para o servidor. Rota pra enviar informações.
-    // O RequestBody pede pra você mandar no corpo da requisição os dados do Livro.
+    @PostMapping("/livros") // Requisição para postar/mandar para o servidor. Rota pra enviar informações.
     public String salvarLivro(
             Livro livro,
             RedirectAttributes redirectAttributes) {
@@ -77,7 +76,7 @@ public class LivroController {
     } // pega a informação enviada no corpo da requisição (Livro) e salva.
 
     // EXCLUIR
-    @GetMapping("/delete/{id}")
+    @GetMapping("/livros/delete/{id}")
     public String excluirLivro(
             @PathVariable Long id,
             RedirectAttributes redirectAttributes) {
@@ -89,10 +88,10 @@ public class LivroController {
                 "Livro excluído com sucesso!");
 
         return "redirect:/";
-        }
+    }
 
     //EDITAR
-    @GetMapping("/editar/{id}")
+    @GetMapping("/livros/editar/{id}")
     public String editarLivro(@PathVariable Long id, Model model) {
 
         Livro livro = livroService.getById(id);
