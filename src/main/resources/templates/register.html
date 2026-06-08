@@ -1,94 +1,107 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layouts/main}">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Criar Conta - Biblioteca</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/style.css">
+    <title th:text="${pageTitle}">Título padrão</title>
 </head>
+
+
 <body>
-<header class="site-header">
-    <div class="header-inner">
-        <div class="logo">
-            <img src="/img/imagemLivros.png" alt="Logo Biblioteca" class="logo-icon" width="48" height="48">
-            <div>
-                <h1 class="logo-title">Biblioteca</h1>
-                <span class="logo-sub">Sistema de Controle de Livros</span>
-            </div>
-        </div>
-        <nav class="header-nav">
-            <a href="/" class="nav-link">Entrar</a>
-        </nav>
-    </div>
-</header>
-<main class="main-content">
-    <section class="form-section">
-        <div class="form-container">
-            <div class="form-heading">
-                <a href="/" class="back-link">← Voltar ao login</a>
-                <h2 class="form-title">Criar Conta</h2>
-                <p class="form-desc">Cadastre-se para acessar o sistema de biblioteca.</p>
-            </div>
-            <form class="livro-form" th:action="@{/register}" th:object="${usuario}" method="post">
-                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    <section layout:fragment="content">
+        <header class="site-header">
+            <div class="header-inner">
+                <div class="logo">
+                    <img th:src="@{/img/imagemLivros.png}" alt="Logo Biblioteca" class="logo-icon" width="48"
+                        height="48">
 
-                <div class="form-grid">
-                    <div class="form-group full-width">
-                        <label for="nome" class="form-label">Nome</label>
-                        <input type="text" id="nome" th:field="*{nome}" class="form-input" placeholder="Seu nome completo" required>
-                        <span class="field-error" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
-                    </div>
-                    <div class="form-group full-width">
-                        <label for="email" class="form-label">E-mail</label>
-                        <input type="email" id="email" th:field="*{email}" class="form-input" placeholder="seu@exemplo.com" required>
-                        <span class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
-                    </div>
-                    <div class="form-group">
-                        <label for="senha" class="form-label">Senha</label>
-                        <input type="password" id="senha" th:field="*{senha}" class="form-input" placeholder="••••••••" required>
-                        <span class="field-error" th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}"></span>
-                    </div>
-                    <div class="form-group">
-                        <label for="confirmSenha" class="form-label">Confirmar senha</label>
-                        <input type="password" id="confirmSenha" th:field="*{confirmSenha}" class="form-input" placeholder="••••••••" required>
-                        <span class="field-error" th:if="${#fields.hasErrors('confirmSenha')}" th:errors="*{confirmSenha}"></span>
-                    </div>
-                    <div class="form-group full-width">
-                        <label for="role" class="form-label">Tipo de usuário</label>
-                        <select id="role" th:field="*{role}" class="form-input form-select" required>
-                            <option value="" disabled>Selecione um tipo</option>
-                            <option value="COMUM">Comum</option>
-                            <option value="BIBLIOTECARIO">Bibliotecário</option>
-                        </select>
-                        <span class="field-error" th:if="${#fields.hasErrors('role')}" th:errors="*{role}"></span>
+                    <div>
+                        <h1 class="logo-title">Biblioteca</h1>
+                        <span class="logo-sub">Sistema de Controle de Livros</span>
                     </div>
                 </div>
-
-                <div class="form-actions">
-                    <a href="/" class="btn-secondary">Cancelar</a>
-                    <button type="submit" class="btn-submit">Criar Conta</button>
-                </div>
-            </form>
-        </div>
-
-        <div class="form-deco">
-            <div class="deco-card">
-                <div class="deco-spine"></div>
-                <div class="deco-content">
-                    <p class="deco-quote">"Cada novo amigo é uma nova aventura..."</p>
-                    <span class="deco-author">— Winnie the Pooh</span>
-                </div>
+                <nav class="header-nav">
+                    <div th:replace="~{fragments/darkswitch :: darkmode}"></div>
+                    <a th:href="@{/}" class="nav-link">Entrar</a>
+                </nav>
             </div>
-            <div class="deco-tip">
-                <strong>💡 Dica:</strong> Escolha o tipo de usuário correto para sua função no sistema.
-            </div>
-        </div>
+
+            <main class="main-content">
+                <section class="form-section">
+                    <div class="form-container">
+                        <div class="form-heading">
+                            <a href="/" class="back-link">← Voltar ao login</a>
+                            <h2 class="form-title">Criar Conta</h2>
+                            <p class="form-desc">Cadastre-se para acessar o sistema de biblioteca.</p>
+                        </div>
+                        <form class="livro-form" th:action="@{/register}" th:object="${usuario}" method="post">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+                            <div class="form-grid">
+                                <div class="form-group full-width">
+                                    <label for="nome" class="form-label">Nome</label>
+                                    <input type="text" id="nome" th:field="*{nome}" class="form-input"
+                                        placeholder="Seu nome completo" required>
+                                    <span class="field-error" th:if="${#fields.hasErrors('nome')}"
+                                        th:errors="*{nome}"></span>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label for="email" class="form-label">E-mail</label>
+                                    <input type="email" id="email" th:field="*{email}" class="form-input"
+                                        placeholder="seu@exemplo.com" required>
+                                    <span class="field-error" th:if="${#fields.hasErrors('email')}"
+                                        th:errors="*{email}"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="senha" class="form-label">Senha</label>
+                                    <input type="password" id="senha" th:field="*{senha}" class="form-input"
+                                        placeholder="••••••••" required>
+                                    <span class="field-error" th:if="${#fields.hasErrors('senha')}"
+                                        th:errors="*{senha}"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirmSenha" class="form-label">Confirmar senha</label>
+                                    <input type="password" id="confirmSenha" th:field="*{confirmSenha}"
+                                        class="form-input" placeholder="••••••••" required>
+                                    <span class="field-error" th:if="${#fields.hasErrors('confirmSenha')}"
+                                        th:errors="*{confirmSenha}"></span>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label for="role" class="form-label">Tipo de usuário</label>
+                                    <select id="role" th:field="*{role}" class="form-input form-select" required>
+                                        <option value="" disabled>Selecione um tipo</option>
+                                        <option value="COMUM">Comum</option>
+                                        <option value="BIBLIOTECARIO">Bibliotecário</option>
+                                    </select>
+                                    <span class="field-error" th:if="${#fields.hasErrors('role')}"
+                                        th:errors="*{role}"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <a th:href="@{/}" class="btn-secondary">Cancelar</a>
+                                <button type="submit" class="btn-submit">Criar Conta</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="form-deco">
+                        <div class="deco-card">
+                            <div class="deco-spine"></div>
+                            <div class="deco-content">
+                                <p class="deco-quote">"Cada novo amigo é uma nova aventura..."</p>
+                                <span class="deco-author">— Winnie the Pooh</span>
+                            </div>
+                        </div>
+                        <div class="deco-tip">
+                            <strong>💡 Dica:</strong> Escolha o tipo de usuário correto para sua função no sistema.
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </header>
     </section>
-</main>
-<footer class="site-footer">
-    <p>Sistema de Controle de Livros • Spring Boot MVC</p>
-</footer>
+
 </body>
+
 </html>

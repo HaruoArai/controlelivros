@@ -11,8 +11,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 //@RestController // Indica que é um controller
 
-@Controller //RestController retorna JSON enquanto Controller retorna páginas HTML (usamos HTML + Thumeleaf no trabalho)
-//@RequestMapping("/livros") // Mapeia as rotas no controller. Rota da API/backend para acessar os dados dos livros.
+@Controller // RestController retorna JSON enquanto Controller retorna páginas HTML (usamos
+            // HTML + Thumeleaf no trabalho)
+// @RequestMapping("/livros") // Mapeia as rotas no controller. Rota da
+// API/backend para acessar os dados dos livros.
 public class LivroController {
 
     // injeção de dependência. Controller sabe que o service existe.
@@ -24,8 +26,10 @@ public class LivroController {
 
     // rota pra pegar informações do servidor.
     @GetMapping("/") // getAll() Listas todos os livros que cadastrar aqui
-    //@ResponseBody // indica que o valor de retorno de um método de controlador deve ser vinculado diretamente ao corpo da resposta HTTP (HTTP response body), e não mapeado para um nome de view (template HTML)
-    public String listarLivros (
+    // @ResponseBody // indica que o valor de retorno de um método de controlador
+    // deve ser vinculado diretamente ao corpo da resposta HTTP (HTTP response
+    // body), e não mapeado para um nome de view (template HTML)
+    public String listarLivros(
             @RequestParam(required = false) String busca,
             Model model) {
 
@@ -43,13 +47,17 @@ public class LivroController {
         model.addAttribute("totalGeneros",
                 livroService.contarGeneros());
 
-        return "index";
+        model.addAttribute("pageTitle", "Home");
+
+        return "home";
     }
 
     // ABRIR formulário
     @GetMapping("/form")
     public String abrirFormulario(Model model) {
         model.addAttribute("livro", new Livro());
+        model.addAttribute("pageTitle", "Criar Livro");
+
         return "form";
     }
 
@@ -90,13 +98,14 @@ public class LivroController {
         return "redirect:/";
     }
 
-    //EDITAR
+    // EDITAR
     @GetMapping("/livros/editar/{id}")
     public String editarLivro(@PathVariable Long id, Model model) {
 
         Livro livro = livroService.getById(id);
 
         model.addAttribute("livro", livro);
+        model.addAttribute("pageTitle", "Editar Livro");
 
         return "form";
     }

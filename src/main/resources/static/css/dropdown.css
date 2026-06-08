@@ -1,0 +1,73 @@
+.profile-menu {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-menu-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+}
+
+.profile-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    min-width: 160px;
+    background-color: var(--card-bg, #fff);
+    border: 1px solid var(--border-color, #ddd);
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    z-index: 1000;
+    padding: 8px 0;
+}
+
+.profile-dropdown {
+    display: none;
+}
+
+.profile-dropdown.show {
+    display: block;
+}
+
+.dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 10px 14px;
+    color: #000;
+    text-decoration: none;
+    background: none;
+    border: none;
+    text-align: left;
+    font: inherit;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.dropdown-item:hover,
+.dropdown-item.active {
+    background-color: rgba(0, 0, 0, 0.06);
+}
+
+.logout-button {
+    width: 100%;
+}
+
+
+/* Variante dark */
+html.dark .profile-dropdown {
+    background-color: #1f2937;
+    border-color: #374151;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+}
+
+html.dark .dropdown-item {
+    color: #f9fafb;
+}
+
+html.dark .dropdown-item:hover,
+html.dark .dropdown-item.active {
+    background-color: rgba(255, 255, 255, 0.08);
+}

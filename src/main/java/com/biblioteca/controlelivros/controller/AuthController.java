@@ -33,8 +33,8 @@ public class AuthController {
 
     @GetMapping("/login")
     public String loginPage(@RequestParam(required = false) String error,
-                            Authentication authentication,
-                            Model model) {
+            Authentication authentication,
+            Model model) {
         if (authentication != null && authentication.isAuthenticated()
                 && !(authentication instanceof AnonymousAuthenticationToken)) {
             return "redirect:/";
@@ -44,20 +44,23 @@ public class AuthController {
             model.addAttribute("loginError", "E-mail ou senha inválidos. Tente novamente.");
         }
 
+        model.addAttribute("pageTitle", "Login");
+
         return "login";
     }
 
     @GetMapping("/register")
     public String registerPage(Model model) {
         model.addAttribute("usuario", new Usuario());
+        model.addAttribute("pageTitle", "Registrar");
         return "register";
     }
 
     @PostMapping("/register")
     public String processRegister(@Valid Usuario usuario,
-                                  BindingResult result,
-                                  Model model,
-                                  HttpSession session) {
+            BindingResult result,
+            Model model,
+            HttpSession session) {
         if (usuarioService.existsByEmail(usuario.getEmail())) {
             result.rejectValue("email", null, "Este e-mail já está em uso.");
         }
@@ -74,10 +77,9 @@ public class AuthController {
         usuarioService.save(usuario);
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(usuario.getEmail(), rawSenha)
-        );
+                new UsernamePasswordAuthenticationToken(usuario.getEmail(), rawSenha));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        
+
         // Persistir a autenticação na sessão HTTP
         SecurityContext securityContext = SecurityContextHolder.getContext();
         session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
@@ -90,14 +92,15 @@ public class AuthController {
         String email = authentication.getName();
         Usuario usuario = usuarioService.findByEmail(email).orElse(null);
         model.addAttribute("usuario", usuario);
+        model.addAttribute("pageTitle", "Profile");
         return "profile";
     }
 
     @PostMapping("/profile")
     public String updateProfile(Usuario usuario,
-                               BindingResult result,
-                               Authentication authentication,
-                               Model model) {
+            BindingResult result,
+            Authentication authentication,
+            Model model) {
         String emailAtual = authentication.getName();
         Usuario usuarioAtual = usuarioService.findByEmail(emailAtual).orElse(null);
 
