@@ -31,35 +31,9 @@ public class LivroController {
     }
 
     // rota pra pegar informações do servidor.
-    // getAll() Listas todos os livros que cadastrar aqui
-    // @ResponseBody // indica que o valor de retorno de um método de controlador
-    // deve ser vinculado diretamente ao corpo da resposta HTTP (HTTP response
-    // body), e não mapeado para um nome de view (template HTML)
-    @GetMapping("/")
-    public String inicio(Authentication authentication) {
-
-        if (authentication == null) {
-            return "redirect:/login";
-        }
-
-        Usuario usuario = usuarioService
-                .findByEmail(authentication.getName())
-                .orElse(null);
-
-        if (usuario == null) {
-            return "redirect:/login";
-        }
-
-        if (usuario.getRole() == Role.BIBLIOTECARIO) {
-            return "redirect:/index";
-        }
-
-        return "redirect:/home";
-    }
-
-    // PÁGINA BIBLIOTECÁRIO
-    @GetMapping("/index")
-    public String index(
+    @GetMapping("/") // getAll() Listas todos os livros que cadastrar aqui
+    //@ResponseBody // indica que o valor de retorno de um método de controlador deve ser vinculado diretamente ao corpo da resposta HTTP (HTTP response body), e não mapeado para um nome de view (template HTML)
+    public String listarLivros (
             @RequestParam(required = false) String busca,
             Model model) {
 
@@ -76,10 +50,6 @@ public class LivroController {
 
         model.addAttribute("totalGeneros",
                 livroService.contarGeneros());
-
-        model.addAttribute("isBibliotecario", true);
-
-        model.addAttribute("pageTitle", "Painel do Bibliotecário");
 
         return "index";
     }
@@ -146,8 +116,8 @@ public class LivroController {
                 "mensagemSucesso",
                 "Livro excluído com sucesso!");
 
-        return "redirect:/index";
-    }
+        return "redirect:/";
+        }
 
     // EDITAR
     @GetMapping("/livros/editar/{id}")
