@@ -10,23 +10,25 @@
     font: inherit;
 }
 
+
 .profile-dropdown {
     display: none;
     position: absolute;
     right: 0;
-    top: 100%;
-    min-width: 160px;
-    background-color: var(--card-bg, #fff);
-    border: 1px solid var(--border-color, #ddd);
-    border-radius: 8px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    top: calc(100% + 0.5rem);
+    min-width: 170px;
+    background-color: #fff;
+
+    border: 1px solid rgba(240, 192, 64, 0.22);
+    border-radius: 10px;
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.38);
     z-index: 1000;
     padding: 8px 0;
+
+    overflow: hidden;
 }
 
-.profile-dropdown {
-    display: none;
-}
+
 
 .profile-dropdown.show {
     display: block;
@@ -56,12 +58,12 @@
 }
 
 
-/* Variante dark */
 html.dark .profile-dropdown {
-    background-color: #1f2937;
-    border-color: #374151;
+
+    background-color: #1a1510;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
 }
+
 
 html.dark .dropdown-item {
     color: #f9fafb;
@@ -70,4 +72,48 @@ html.dark .dropdown-item {
 html.dark .dropdown-item:hover,
 html.dark .dropdown-item.active {
     background-color: rgba(255, 255, 255, 0.08);
+}
+
+
+
+/* ======= DROPDOWN RESPONSIVO NO HEADER MOBILE ======= */
+
+@media (max-width: 768px) {
+    .profile-menu {
+        width: 100%;
+        display: block;
+    }
+
+    .profile-menu-button {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.65rem 1rem;
+        border-radius: 8px;
+        background: rgba(250, 247, 242, 0.06);
+    }
+
+    .profile-dropdown {
+        position: static;
+        width: 100%;
+        min-width: 0;
+        margin-top: 0.5rem;
+        box-shadow: none;
+        border-radius: 8px;
+    }
+
+
+    html.dark .profile-dropdown{
+        background: rgba(250, 247, 242, 0.06);
+        border-color: rgba(250, 247, 242, 0.06);
+    }
+
+    .profile-dropdown.show {
+        display: block;
+    }
+
+    .dropdown-item {
+        text-align: center;
+    }
 }

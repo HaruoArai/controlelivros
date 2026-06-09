@@ -1,6 +1,5 @@
-export const toggleDarkMode = () => {
-    const toggle = document.querySelector("#darkModeToggle");
-
+/** @param {HTMLInputElement|null} toggle */
+export const toggleDarkMode = (toggle) => {
     if (toggle) {
         const isDark = document.documentElement.classList.contains("dark");
         toggle.checked = isDark;

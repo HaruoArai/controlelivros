@@ -1,25 +1,21 @@
-import { configurarMenuPerfil } from './profile-menu.js';
-import { toggleDarkMode } from './darkmode.js'
-
-
-// Função que volta para a tela inicial ao clicar na logo
-const goToHome = () => {
-    /** @type {HTMLDivElement|null} */
-    const element = document.querySelector("#header_logo")
-
-    if (element) {
-        element.style.cursor = 'pointer';
-        element.addEventListener('click', (e) => {
-            window.location.href = "/";
-        })
-    }
-}
+import { toggleDarkMode } from './modules/DarkMode.js'
+import { HeaderUtils } from './modules/Header.js';
 
 
 const main = () => {
-    toggleDarkMode();
-    goToHome();
-    configurarMenuPerfil();
+    toggleDarkMode(document.getElementById('darkModeToggle'));
+
+    const headerUtils = new HeaderUtils({
+        logo: document.getElementById('headerLogo'),
+        toggle: document.getElementById('headerToggle'),
+        nav: document.getElementById('headerNav'),
+        profileMenu: document.getElementById('profileMenu'),
+        profileButton: document.getElementById('profileMenuButton'),
+        profileDropdown: document.getElementById('profileDropdown')
+    });
+
+    headerUtils.init();
+
 }
 
 

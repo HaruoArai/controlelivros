@@ -1,0 +1,66 @@
+/* Switch de tema */
+.theme-switch {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    width: 64px;
+    height: 32px;
+}
+
+.theme-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.theme-slider {
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+    background: rgba(250, 247, 242, 0.25);
+    border: 1px solid rgba(250, 247, 242, 0.25);
+    border-radius: 999px;
+    transition: background var(--transition), border-color var(--transition);
+    overflow: hidden;
+}
+
+.theme-slider::before {
+    content: "";
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    left: 4px;
+    top: 3px;
+    background: #faf7f2;
+    border-radius: 50%;
+    transition: transform var(--transition), background var(--transition);
+    z-index: 2;
+}
+
+.theme-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.78rem;
+    line-height: 1;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.theme-icon.sun {
+    left: 8px;
+}
+
+.theme-icon.moon {
+    right: 8px;
+}
+
+.theme-switch input:checked + .theme-slider {
+    background: var(--gold);
+    border-color: var(--gold-light);
+}
+
+.theme-switch input:checked + .theme-slider::before {
+    transform: translateX(32px);
+    background: #1a1510;
+}

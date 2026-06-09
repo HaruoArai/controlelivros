@@ -9,23 +9,10 @@
 
 <body>
     <section layout:fragment="content">
-        <header class="site-header">
-            <div class="header-inner">
-                <div class="logo">
-                    <img th:src="@{/img/imagemLivros.png}" alt="Logo Biblioteca" class="logo-icon" width="48"
-                        height="48">
+          <div th:replace="~{fragments/header :: guestHeader('register')}"></div>
 
-                    <div>
-                        <h1 class="logo-title">Biblioteca</h1>
-                        <span class="logo-sub">Sistema de Controle de Livros</span>
-                    </div>
-                </div>
-                <nav class="header-nav">
-                    <div th:replace="~{fragments/darkswitch :: darkmode}"></div>
-                    <a th:href="@{/}" class="nav-link">Entrar</a>
-                </nav>
-            </div>
 
+    
             <main class="main-content">
                 <section class="form-section">
                     <div class="form-container">
