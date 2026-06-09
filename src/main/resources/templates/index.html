@@ -1,38 +1,25 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Controle de Livros</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/style.css">
+    <title>Bibliotecário</title>
 </head>
+
 <body>
 
-<header class="site-header">
-    <div class="header-inner">
-        <div class="logo">
-            <img src="/img/imagemLivros.png" alt="Logo Biblioteca" class="logo-icon" width="48" height="48">
-            <div>
-                <h1 class="logo-title">Biblioteca</h1>
-                <span class="logo-sub">Sistema de Controle de Livros</span>
-            </div>
-        </div>
-        <nav class="header-nav">
-            <a href="/" class="nav-link active">Acervo</a>
-            <a href="/form" class="btn-primary">+ Novo Livro</a>
-        </nav>
-    </div>
-</header>
+<section layout:fragment="content">
+
+<div th:replace="~{fragments/header :: siteHeader('acervo')}"></div>
 
 <main class="main-content">
 
-<div
-        th:if="${mensagemSucesso}"
-        class="alert alert-success"
-        th:text="${mensagemSucesso}">
-</div>
+    <div
+            th:if="${mensagemSucesso}"
+            class="alert alert-success"
+            th:text="${mensagemSucesso}">
+    </div>
 
     <section class="page-hero">
         <div class="hero-text">
@@ -53,11 +40,23 @@
                 <span class="stat-num" th:text="${totalGeneros}"></span>
                 <span class="stat-label">Gêneros</span>
             </div>
+            <div class="stat-card">
+                <span class="stat-num" th:text="${totalEstoque}"></span>
+                <span class="stat-label">Em Estoque</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-num" th:text="${emprestimosAtivos}"></span>
+                <span class="stat-label">Emprestados</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-num" th:text="${emprestimosPendentes}"></span>
+                <span class="stat-label">Pendentes</span>
+            </div>
         </div>
     </section>
 
     <section class="search-bar-section">
-        <form class="search-form" action="#" method="get">
+        <form class="search-form" th:action="@{/}" method="get">
             <div class="search-wrapper">
                 <span class="search-icon">🔍</span>
                 <input
@@ -91,6 +90,8 @@
                     <th>Gênero</th>
                     <th>Ano</th>
                     <th>ISBN</th>
+                    <th>Estoque</th>
+                    <th>Status</th>
                     <th>Ações</th>
                 </tr>
                 </thead>
@@ -202,14 +203,28 @@
 
                     <td class="td-isbn" th:text="${livro.isbn}"></td>
 
+                    <td th:text="${livro.quantidade}"></td>
+
+                    <td>
+                        <span th:if="${livro.quantidade > 0}"
+                              class="badge badge-naturalismo">
+                            Disponível
+                        </span>
+
+                        <span th:if="${livro.quantidade == 0}"
+                              class="badge badge-terror">
+                            Indisponível
+                        </span>
+                    </td>
+
                     <td class="td-acoes">
-                        <a th:href="@{/editar/{id}(id=${livro.id})}"
+                        <a th:href="@{/livros/editar/{id}(id=${livro.id})}"
                            class="btn-edit">
                             ✏️
                         </a>
 
                         <!-- Teste inicial. Depois é preciso integrar com o modal -->
-                        <a th:href="@{/delete/{id}(id=${livro.id})}"
+                        <a th:href="@{/livros/delete/{id}(id=${livro.id})}"
                            class="btn-delete"
                            onclick="return confirm('Deseja realmente excluir este livro?')">
                             🗑️
@@ -236,10 +251,11 @@
     </div>
 </div>
 
-<footer class="site-footer">
-    <p>Sistema de Controle de Livros • Spring Boot MVC &copy; 2026</p>
-</footer>
+<th:block layout:fragment="scripts">
+    <script th:src="@{/js/main.js}"></script>
+</th:block>
 
-<script src="/js/main.js"></script>
+</section>
+
 </body>
 </html>

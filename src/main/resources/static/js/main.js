@@ -16,7 +16,24 @@ function fecharModal() {
   document.getElementById('modalExclusao').classList.remove('active');
 }
 
+
+// Função que volta para a tela inicial ao clicar na logo
+const logoHome = () => {
+  /** @type {HTMLDivElement|null} */
+  const element = document.querySelector("#header_logo")
+
+  if (element) {
+    element.style.cursor = 'pointer';
+    element.addEventListener('click', (e) => {
+      window.location.href = "/";
+    })
+  }
+}
+
+
+
 document.addEventListener('DOMContentLoaded', () => {
+  logoHome();
 
   // Fechar modal ao clicar fora
   const modal = document.getElementById('modalExclusao');
@@ -31,6 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
   rows.forEach((row, i) => {
     row.style.animationDelay = `${i * 0.06}s`;
   });
+
+
 
   // Highlight campo de busca
   const searchInput = document.querySelector('.search-input');
@@ -50,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const valor = parseInt(campoAno.value);
       if (valor > anoAtual) {
         campoAno.setCustomValidity(
-            `O ano não pode ser maior que ${anoAtual}.`
+          `O ano não pode ser maior que ${anoAtual}.`
         );
 
         campoAno.reportValidity();

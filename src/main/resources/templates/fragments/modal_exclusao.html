@@ -1,0 +1,24 @@
+<!-- Modal de Exclusão do Livro -->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+    <div th:fragment="modal_exclusao_livro">
+        <!-- Modal de confirmação de exclusão -->
+        <div class="modal-overlay" id="modalExclusao">
+            <div class="modal-box">
+                <div class="modal-icon">⚠️</div>
+                <h3 class="modal-title">Excluir livro?</h3>
+                <p class="modal-desc">Esta ação não pode ser desfeita.</p>
+                <div class="modal-btns">
+                    <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
+                    <button class="btn-confirm-delete">Excluir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+</html>

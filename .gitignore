@@ -35,6 +35,8 @@ build/
 *.mv.db
 *.trace.db
 
+data/
+
 # Arquivos gerados pelo Maven
 target/
 

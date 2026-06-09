@@ -1,0 +1,73 @@
+<!-- templates/fragments/header.html -->
+<header th:fragment="siteHeader(activePage)" class="site-header" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <div class="header-inner">
+        <div class="logo" id="header_logo">
+            <img th:src="@{/img/imagemLivros.png}" alt="Logo Biblioteca" class="logo-icon" width="48" height="48">
+
+            <div>
+                <h1 class="logo-title">Biblioteca</h1>
+                <span class="logo-sub">Sistema de Controle de Livros</span>
+            </div>
+        </div>
+
+        <nav class="header-nav">
+
+            <!-- Alterar Tema -->
+            <div th:replace="~{fragments/darkswitch :: darkmode}"></div>
+
+            <!-- Acervo -->
+            <a th:href="@{/}"
+               class="nav-link"
+               th:classappend="${activePage == 'acervo'} ? ' active'">
+                Acervo
+            </a>
+
+            <!-- Somente Bibliotecário -->
+            <a sec:authorize="hasRole('BIBLIOTECARIO')"
+               th:href="@{/emprestimos}"
+               class="nav-link"
+               th:classappend="${activePage == 'emprestimos'} ? ' active'">
+                Empréstimos
+            </a>
+
+            <!-- Somente Usuário -->
+            <a sec:authorize="hasRole('COMUM')"
+               th:href="@{/meus-emprestimos}"
+               class="nav-link"
+               th:classappend="${activePage == 'meusEmprestimos'} ? ' active'">
+                Meus Empréstimos
+            </a>
+
+            <!-- Somente Bibliotecário -->
+            <a sec:authorize="hasRole('BIBLIOTECARIO')"
+               th:href="@{/form}"
+               class="btn-primary"
+               th:classappend="${activePage == 'form'} ? ' active'">
+                + Novo Livro
+            </a>
+
+            <div class="profile-menu" id="profileMenu">
+                <button type="button" class="nav-link profile-menu-button" id="profileMenuButton"
+                    th:classappend="${activePage == 'profile'} ? ' active'">
+                    <span sec:authentication="name">Perfil</span> ▾
+                </button>
+
+                <div class="profile-dropdown" id="profileDropdown">
+                    <a th:href="@{/profile}" class="dropdown-item"
+                        th:classappend="${activePage == 'profile'} ? ' active'">
+                        Alterar Dados
+                    </a>
+
+                    <form th:action="@{/logout}" method="post" onsubmit="return confirm('Deseja realmente sair?');">
+
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+                        <button type="submit" class="dropdown-item logout-button">
+                            Sair
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>

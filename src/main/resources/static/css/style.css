@@ -377,6 +377,20 @@ body {
   text-decoration: none;
 }
 
+.btn-emprestimo {
+  background: #27ae60;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.btn-emprestimo:hover {
+  opacity: 0.9;
+}
+
 .btn-edit {
   background: #fff8e1;
   border-color: #f0d060;
@@ -548,6 +562,13 @@ body {
 }
 
 .form-input::placeholder { color: rgba(26, 21, 16, 0.3); }
+
+.field-error {
+  color: var(--red);
+  font-size: 0.82rem;
+  margin-top: 0.25rem;
+  display: block;
+}
 
 .form-select { cursor: pointer; }
 
