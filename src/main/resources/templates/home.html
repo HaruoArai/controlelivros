@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layouts/main}">
+
+<head>
+    <title th:text="${pageTitle}">Título padrão</title>
+</head>
+
+<body>
+    <section layout:fragment="content">
+        <div th:replace="~{fragments/header :: siteHeader('')}"></div>
+
+        <main class="main-content">
+
+            <div th:if="${mensagemSucesso}" class="alert alert-success" th:text="${mensagemSucesso}">
+            </div>
+
+            <section class="page-hero">
+                <div class="hero-text">
+                    <h2 class="hero-title">Acervo <em>Digital</em></h2>
+                    <p class="hero-desc">Gerencie sua coleção de livros com facilidade.</p>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-card">
+                        <!-- mostra a quantidade real de livros cadastrados -->
+                        <span class="stat-num" th:text="${#lists.size(livros)}"></span>
+                        <span class="stat-label">Livros</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-num" th:text="${totalAutores}"></span>
+                        <span class="stat-label">Autores</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-num" th:text="${totalGeneros}"></span>
+                        <span class="stat-label">Gêneros</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="search-bar-section">
+                <form class="search-form" th:action="@{/}" method="get">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" name="busca" class="search-input"
+                        placeholder="Pesquisar por título, autor ou gênero..." th:value="${param.busca}">
+                    <button type="submit" class="search-btn">Buscar</button>
+                    </div>
+                </form>
+            </section>
+
+            <section class="table-section">
+                <div class="table-header">
+                    <h3 class="table-title">Todos os Livros</h3>
+                    <!-- Conta a quantidade de livros encontrados -->
+                    <span class="table-count">
+                        <span th:text="${#lists.size(livros)}"></span> encontrados
+                    </span>
+                </div>
+
+                <div class="table-wrapper">
+                    <table class="livros-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Título</th>
+                                <th>Autor</th>
+                                <th>Gênero</th>
+                                <th>Ano</th>
+                                <th>ISBN</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <!-- No código abaixo o Thymeleaf vai criar uma linha da tabela para cada livro retornado pelo banco. -->
+                            <tr class="table-row" th:each="livro, status : ${livros}">
+                                <td class="td-id" th:text="${status.count}"></td>
+
+                                <td class="td-titulo">
+                                    <span class="titulo-text" th:text="${livro.titulo}"></span>
+                                </td>
+
+                                <td th:text="${livro.autor}"></td>
+
+                                <!-- Criei um switch para tratar "ç", "ã" e "í" no CSS -->
+                                <td>
+                                    <span th:switch="${livro.genero}">
+
+                                        <span th:case="'Ficção Científica'" class="badge badge-ficcao-cientifica"
+                                            th:text="${livro.genero}">
+                                        </span>
+
+                                        <span th:case="'Ficção Distópica'" class="badge badge-ficcao-distopica"
+                                            th:text="${livro.genero}">
+                                        </span>
+
+                                        <span th:case="*"
+                                            th:class="'badge badge-' + ${#strings.toLowerCase(livro.genero)}"
+                                            th:text="${livro.genero}">
+                                        </span>
+
+                                    </span>
+                                </td>
+
+                                <td th:text="${livro.ano}"></td>
+
+                                <td class="td-isbn" th:text="${livro.isbn}"></td>
+
+                                <td class="td-acoes">
+                                    <a th:href="@{/livros/editar/{id}(id=${livro.id})}" class="btn-edit">
+                                        ✏️
+                                    </a>
+
+                                    <!-- Teste inicial. Depois é preciso integrar com o modal -->
+                                    <a th:href="@{/livros/delete/{id}(id=${livro.id})}" class="btn-delete"
+                                        onclick="return confirm('Deseja realmente excluir este livro?')">
+                                        🗑️
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+
+
+    </section>
+
+</body>
+
+</html>
