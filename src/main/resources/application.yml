@@ -9,8 +9,14 @@ spring:
     console:
       enabled: true
 
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:migration.sql
+
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: update
     show-sql: true
+    defer-datasource-initialization: true

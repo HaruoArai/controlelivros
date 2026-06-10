@@ -1442,3 +1442,33 @@ html.dark ::-webkit-scrollbar-thumb:hover {
     font-size: .8rem;
     font-weight: 600;
 }
+.badge-aprovado {
+    display: inline-block;
+    padding: .45rem .9rem;
+    border-radius: 20px;
+    background: #d1fae5;
+    border: 1px solid #10b981;
+    color: #065f46;
+    font-size: .8rem;
+    font-weight: 600;
+}
+
+/* Tab de Atrasados */
+.filter-tab-danger {
+    color: var(--red, #dc2626) !important;
+    border-color: var(--red, #dc2626) !important;
+}
+.filter-tab-danger.active,
+.filter-tab-danger:hover {
+    background: var(--red, #dc2626) !important;
+    color: #fff !important;
+}
+
+/* Cards de estatísticas — usuário comum */
+.emp-stat.success .num { color: #16a34a; }
+.emp-stat.recusado .num { color: #6b7280; }
+
+/* Em telas menores, 2 por linha */
+@media (max-width: 640px) {
+    .emp-stats-usuario .emp-stat { min-width: calc(50% - 0.5rem); }
+}
