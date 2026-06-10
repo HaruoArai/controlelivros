@@ -11,7 +11,7 @@ public class Emprestimo {
     private static final DateTimeFormatter FMT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public enum Status {
-        PENDENTE, APROVADO, DEVOLVIDO, RECUSADO
+        PENDENTE, APROVADO, DEVOLVIDO, RECUSADO, PRORROGACAO_SOLICITADA
     }
 
     @Id
@@ -27,6 +27,7 @@ public class Emprestimo {
     private Usuario usuario;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "status", columnDefinition = "VARCHAR(30)")
     private Status status = Status.PENDENTE;
 
     private LocalDate dataSolicitacao;
@@ -34,15 +35,22 @@ public class Emprestimo {
     private LocalDate dataDevolucaoPrevista;
     private LocalDate dataDevolucaoReal;
 
+    // Campos de prorrogação
+    private Integer diasProrrogacaoSolicitados;
+    private LocalDate dataSolicitacaoProrrogacao;
+
     public Emprestimo() {
         this.dataSolicitacao = LocalDate.now();
     }
 
-
     public boolean isAtrasado() {
-        return status == Status.APROVADO
+        return (status == Status.APROVADO || status == Status.PRORROGACAO_SOLICITADA)
                 && dataDevolucaoPrevista != null
                 && LocalDate.now().isAfter(dataDevolucaoPrevista);
+    }
+
+    public boolean isProrrogacaoSolicitada() {
+        return status == Status.PRORROGACAO_SOLICITADA;
     }
 
     public String getDataSolicitacaoFmt() {
@@ -57,7 +65,9 @@ public class Emprestimo {
     public String getDataDevolucaoRealFmt() {
         return dataDevolucaoReal != null ? dataDevolucaoReal.format(FMT) : "—";
     }
-
+    public String getDataSolicitacaoProrrogacaoFmt() {
+        return dataSolicitacaoProrrogacao != null ? dataSolicitacaoProrrogacao.format(FMT) : "—";
+    }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -82,4 +92,10 @@ public class Emprestimo {
 
     public LocalDate getDataDevolucaoReal() { return dataDevolucaoReal; }
     public void setDataDevolucaoReal(LocalDate dataDevolucaoReal) { this.dataDevolucaoReal = dataDevolucaoReal; }
+
+    public Integer getDiasProrrogacaoSolicitados() { return diasProrrogacaoSolicitados; }
+    public void setDiasProrrogacaoSolicitados(Integer diasProrrogacaoSolicitados) { this.diasProrrogacaoSolicitados = diasProrrogacaoSolicitados; }
+
+    public LocalDate getDataSolicitacaoProrrogacao() { return dataSolicitacaoProrrogacao; }
+    public void setDataSolicitacaoProrrogacao(LocalDate dataSolicitacaoProrrogacao) { this.dataSolicitacaoProrrogacao = dataSolicitacaoProrrogacao; }
 }

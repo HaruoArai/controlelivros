@@ -31,7 +31,6 @@ public class EmprestimoController {
         this.usuarioService = usuarioService;
     }
 
-    // Painel do bibliotecário — lista todos os empréstimos
     @GetMapping
     public String painel(@RequestParam(required = false) String busca,
                          @RequestParam(required = false) String filtro,
@@ -51,23 +50,36 @@ public class EmprestimoController {
                     lista = emprestimoService.buscarPendentes(busca);
                 } else if ("ativos".equals(filtro)) {
                     lista = emprestimoService.buscarAtivos(busca);
+                } else if ("atrasados".equals(filtro)) {
+                    lista = emprestimoService.buscarAtrasados(busca);
                 } else {
                     lista = emprestimoService.buscar(busca);
                 }
             } else if ("pendentes".equals(filtro)) {
                 lista = emprestimoService.getPendentes();
+            } else if ("prorrogacoes".equals(filtro)) {
+                lista = emprestimoService.getProrrogacoesPendentes();
             } else if ("ativos".equals(filtro)) {
                 lista = emprestimoService.getAtivos();
+            } else if ("atrasados".equals(filtro)) {
+                lista = emprestimoService.getAtrasados();
             } else {
-                lista = emprestimoService.getTodos();
+                lista = emprestimoService.getTodosComPendentesNoTopo();
             }
 
             model.addAttribute("totalPendentes", emprestimoService.contarPendentes());
             model.addAttribute("totalAtivos", emprestimoService.contarAtivos());
             model.addAttribute("totalAtrasados", emprestimoService.contarAtrasados());
+            model.addAttribute("totalProrrogacoes", emprestimoService.contarProrrogacoesPendentes());
         } else {
-            // Usuário comum vê apenas seus próprios empréstimos
-            lista = emprestimoService.doUsuario(logado);
+            lista = emprestimoService.doUsuarioComPendentesNoTopo(logado);
+
+            List<Emprestimo> todos = lista;
+            model.addAttribute("userTotalPendentes",  todos.stream().filter(e -> e.getStatus() == Emprestimo.Status.PENDENTE).count());
+            model.addAttribute("userTotalAtivos",     todos.stream().filter(e -> (e.getStatus() == Emprestimo.Status.APROVADO || e.getStatus() == Emprestimo.Status.PRORROGACAO_SOLICITADA) && !e.isAtrasado()).count());
+            model.addAttribute("userTotalAtrasados",  todos.stream().filter(e -> (e.getStatus() == Emprestimo.Status.APROVADO || e.getStatus() == Emprestimo.Status.PRORROGACAO_SOLICITADA) && e.isAtrasado()).count());
+            model.addAttribute("userTotalDevolvidos", todos.stream().filter(e -> e.getStatus() == Emprestimo.Status.DEVOLVIDO).count());
+            model.addAttribute("userTotalRecusados",  todos.stream().filter(e -> e.getStatus() == Emprestimo.Status.RECUSADO).count());
         }
 
         model.addAttribute("emprestimos", lista);
@@ -147,6 +159,60 @@ public class EmprestimoController {
         try {
             emprestimoService.registrarDevolucao(id);
             redirectAttributes.addFlashAttribute("mensagemSucesso", "Devolução registrada com sucesso!");
+        } catch (IllegalStateException ex) {
+            redirectAttributes.addFlashAttribute("mensagemErro", ex.getMessage());
+        }
+        return "redirect:/emprestimos";
+    }
+
+    // Usuário solicita prorrogação de prazo
+    @PostMapping("/{id}/prorrogar")
+    public String prorrogar(@PathVariable Long id,
+                            @RequestParam(defaultValue = "7") int dias,
+                            Authentication authentication,
+                            RedirectAttributes redirectAttributes) {
+
+        Usuario usuario = usuarioLogado(authentication);
+
+        try {
+            emprestimoService.solicitarProrrogacao(id, dias, usuario);
+            redirectAttributes.addFlashAttribute("mensagemSucesso",
+                    "Solicitação de prorrogação enviada! Aguarde a aprovação do bibliotecário.");
+        } catch (IllegalStateException ex) {
+            redirectAttributes.addFlashAttribute("mensagemErro", ex.getMessage());
+        }
+        return "redirect:/emprestimos";
+    }
+
+    // Bibliotecário aprova prorrogação
+    @PostMapping("/{id}/prorrogar/aprovar")
+    public String aprovarProrrogacao(@PathVariable Long id,
+                                     Authentication authentication,
+                                     RedirectAttributes redirectAttributes) {
+
+        if (!isBibliotecario(authentication)) return "redirect:/emprestimos";
+
+        try {
+            Emprestimo e = emprestimoService.aprovarProrrogacao(id);
+            redirectAttributes.addFlashAttribute("mensagemSucesso",
+                    "Prorrogação aprovada! Novo prazo: " + e.getDataDevolucaoPrevistaFmt());
+        } catch (IllegalStateException ex) {
+            redirectAttributes.addFlashAttribute("mensagemErro", ex.getMessage());
+        }
+        return "redirect:/emprestimos";
+    }
+
+    // Bibliotecário recusa prorrogação
+    @PostMapping("/{id}/prorrogar/recusar")
+    public String recusarProrrogacao(@PathVariable Long id,
+                                     Authentication authentication,
+                                     RedirectAttributes redirectAttributes) {
+
+        if (!isBibliotecario(authentication)) return "redirect:/emprestimos";
+
+        try {
+            emprestimoService.recusarProrrogacao(id);
+            redirectAttributes.addFlashAttribute("mensagemSucesso", "Prorrogação recusada. Prazo original mantido.");
         } catch (IllegalStateException ex) {
             redirectAttributes.addFlashAttribute("mensagemErro", ex.getMessage());
         }

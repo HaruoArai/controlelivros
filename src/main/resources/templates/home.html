@@ -127,11 +127,17 @@
 
                                 <td class="td-acoes">
 
-                                    <!-- Já solicitado -->
+                                    <!-- Já aprovado -->
                                     <span
-                                        th:if="${#lists.contains(livrosSolicitados, livro.id)}"
-                                        class="badge-solicitado">
+                                        th:if="${#lists.contains(livrosAprovados, livro.id)}"
+                                        class="badge-aprovado">
+                                        Empréstimo aprovado ✓
+                                    </span>
 
+                                    <!-- Solicitação pendente -->
+                                    <span
+                                        th:if="${#lists.contains(livrosPendentes, livro.id)}"
+                                        class="badge-solicitado">
                                         Solicitação pendente
                                     </span>
 

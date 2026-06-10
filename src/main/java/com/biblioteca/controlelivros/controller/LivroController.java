@@ -98,18 +98,25 @@ public class LivroController {
                 .findByEmail(authentication.getName())
                 .orElseThrow(() -> new IllegalStateException("Usuário não encontrado."));
 
-        List<Long> livrosSolicitados =
-                emprestimoService
-                        .doUsuario(usuario)
-                        .stream()
-                        .filter(e ->
-                                e.getStatus() == Emprestimo.Status.PENDENTE
-                                        ||
-                                        e.getStatus() == Emprestimo.Status.APROVADO)
-                        .map(e -> e.getLivro().getId())
-                        .toList();
+        List<Emprestimo> emprestimosUsuario = emprestimoService.doUsuario(usuario);
+
+        List<Long> livrosPendentes = emprestimosUsuario.stream()
+                .filter(e -> e.getStatus() == Emprestimo.Status.PENDENTE)
+                .map(e -> e.getLivro().getId())
+                .toList();
+
+        List<Long> livrosAprovados = emprestimosUsuario.stream()
+                .filter(e -> e.getStatus() == Emprestimo.Status.APROVADO)
+                .map(e -> e.getLivro().getId())
+                .toList();
+
+        List<Long> livrosSolicitados = new java.util.ArrayList<>();
+        livrosSolicitados.addAll(livrosPendentes);
+        livrosSolicitados.addAll(livrosAprovados);
 
         model.addAttribute("livrosSolicitados", livrosSolicitados);
+        model.addAttribute("livrosPendentes", livrosPendentes);
+        model.addAttribute("livrosAprovados", livrosAprovados);
         model.addAttribute("totalAutores",
                 livros.stream()
                         .map(Livro::getAutor)
