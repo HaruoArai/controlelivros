@@ -817,7 +817,7 @@ main#main_content {
     }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 900px) {
     .header-inner {
         padding: 0 1rem;
     }
@@ -1167,7 +1167,7 @@ html.dark ::-webkit-scrollbar-thumb:hover {
 
 
 /* EMPRÉSTIMO */
-@media (max-width: 640px) {
+@media (max-width: 900px) {
     .emp-stat {
         min-width: 100%;
     }
@@ -1305,7 +1305,7 @@ html.dark ::-webkit-scrollbar-thumb:hover {
     transform: translateY(-1px);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
     .header-inner {
         height: auto;
         min-height: 72px;

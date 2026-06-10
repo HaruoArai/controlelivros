@@ -78,7 +78,7 @@ html.dark .dropdown-item.active {
 
 /* ======= DROPDOWN RESPONSIVO NO HEADER MOBILE ======= */
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
     .profile-menu {
         width: 100%;
         display: block;

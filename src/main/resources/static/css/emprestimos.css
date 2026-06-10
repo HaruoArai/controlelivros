@@ -1,0 +1,15 @@
+.search-wrapper {
+    max-width: 100% !important;
+}
+html.dark .emp-stat{
+    background-color: #212121 !important;
+}
+
+html.dark .emp-table-wrapper {
+    background-color: #212121;
+}
+
+html.dark .emp-table-wrapper thead {
+    background-color: #000;
+    color:#fff;
+}
