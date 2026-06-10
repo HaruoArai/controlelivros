@@ -35,4 +35,26 @@ public interface EmprestimoRepository extends JpaRepository<Emprestimo, Long> {
         ORDER BY e.dataSolicitacao DESC
     """)
     List<Emprestimo> buscar(@Param("busca") String busca);
+
+    @Query("""
+        SELECT e FROM Emprestimo e
+        WHERE e.status = 'APROVADO'
+          AND (
+                LOWER(e.usuario.nome) LIKE LOWER(CONCAT('%', :busca, '%'))
+             OR LOWER(e.livro.titulo) LIKE LOWER(CONCAT('%', :busca, '%'))
+          )
+        ORDER BY e.dataSolicitacao DESC
+    """)
+    List<Emprestimo> buscarAtivos(@Param("busca") String busca);
+
+    @Query("""
+        SELECT e FROM Emprestimo e
+        WHERE e.status = 'PENDENTE'
+          AND (
+                LOWER(e.usuario.nome) LIKE LOWER(CONCAT('%', :busca, '%'))
+             OR LOWER(e.livro.titulo) LIKE LOWER(CONCAT('%', :busca, '%'))
+          )
+        ORDER BY e.dataSolicitacao DESC
+    """)
+    List<Emprestimo> buscarPendentes(@Param("busca") String busca);
 }

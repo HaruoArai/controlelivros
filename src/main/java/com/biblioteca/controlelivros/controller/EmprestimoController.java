@@ -47,7 +47,13 @@ public class EmprestimoController {
 
         if (isBibliotecario) {
             if (busca != null && !busca.isBlank()) {
-                lista = emprestimoService.buscar(busca);
+                if ("pendentes".equals(filtro)) {
+                    lista = emprestimoService.buscarPendentes(busca);
+                } else if ("ativos".equals(filtro)) {
+                    lista = emprestimoService.buscarAtivos(busca);
+                } else {
+                    lista = emprestimoService.buscar(busca);
+                }
             } else if ("pendentes".equals(filtro)) {
                 lista = emprestimoService.getPendentes();
             } else if ("ativos".equals(filtro)) {
@@ -81,7 +87,7 @@ public class EmprestimoController {
 
         if (livro == null) {
             redirectAttributes.addFlashAttribute("mensagemErro", "Livro não encontrado.");
-            return "redirect:/";
+            return "redirect:/home";
         }
 
         try {
@@ -92,7 +98,7 @@ public class EmprestimoController {
             redirectAttributes.addFlashAttribute("mensagemErro", ex.getMessage());
         }
 
-        return "redirect:/";
+        return "redirect:/home";
     }
 
     // Bibliotecário aprova

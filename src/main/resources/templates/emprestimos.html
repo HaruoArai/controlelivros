@@ -48,11 +48,22 @@
         <!-- Busca -->
         <section class="search-bar-section">
             <form class="search-form" th:action="@{/emprestimos}" method="get">
-                <span class="search-icon">🔍</span>
-                <input type="text" name="busca" class="search-input"
-                       placeholder="Buscar por usuário ou título do livro..."
-                       th:value="${busca}">
-                <button type="submit" class="search-btn">Buscar</button>
+                <input type="hidden" name="filtro" th:value="${filtro}">
+
+                <div class="search-wrapper">
+                    <span class="search-icon">🔍</span>
+
+                    <input
+                            type="text"
+                            name="busca"
+                            class="search-input"
+                            placeholder="Buscar por usuário ou título do livro..."
+                            th:value="${busca}">
+
+                    <button type="submit" class="search-btn">
+                        Buscar
+                    </button>
+                </div>
             </form>
         </section>
 
@@ -163,7 +174,7 @@
         <div th:if="${#lists.isEmpty(emprestimos)}" class="empty-state">
             <div class="icon">📚</div>
             <p>Você ainda não tem nenhum empréstimo.</p>
-            <a th:href="@{/home" class="btn-primary" style="display:inline-block;margin-top:1rem;">Explorar acervo</a>
+            <a th:href="@{/home}" class="btn-primary" style="display:inline-block;margin-top:1rem;">Explorar acervo</a>
         </div>
 
         <section th:unless="${#lists.isEmpty(emprestimos)}" class="table-section">

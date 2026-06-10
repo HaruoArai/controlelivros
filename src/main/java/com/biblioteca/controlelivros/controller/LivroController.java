@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.security.core.Authentication;
 import com.biblioteca.controlelivros.service.EmprestimoService;
+import com.biblioteca.controlelivros.model.Emprestimo;
 
 import java.util.List;
 //@RestController // Indica que é um controller
@@ -82,16 +83,44 @@ public class LivroController {
     @GetMapping("/home")
     public String home(
             @RequestParam(required = false) String busca,
+            Authentication authentication,
             Model model) {
 
+        List<Livro> livros;
+
         if (busca != null && !busca.isBlank()) {
-            model.addAttribute("livros",
-                    livroService.buscar(busca));
+            livros = livroService.buscar(busca);
         } else {
-            model.addAttribute("livros",
-                    livroService.getAll());
+            livros = livroService.getAll();
         }
 
+        Usuario usuario = usuarioService
+                .findByEmail(authentication.getName())
+                .orElseThrow(() -> new IllegalStateException("Usuário não encontrado."));
+
+        List<Long> livrosSolicitados =
+                emprestimoService
+                        .doUsuario(usuario)
+                        .stream()
+                        .filter(e ->
+                                e.getStatus() == Emprestimo.Status.PENDENTE
+                                        ||
+                                        e.getStatus() == Emprestimo.Status.APROVADO)
+                        .map(e -> e.getLivro().getId())
+                        .toList();
+
+        model.addAttribute("livrosSolicitados", livrosSolicitados);
+        model.addAttribute("totalAutores",
+                livros.stream()
+                        .map(Livro::getAutor)
+                        .distinct()
+                        .count());
+        model.addAttribute("totalGeneros",
+                livros.stream()
+                        .map(Livro::getGenero)
+                        .distinct()
+                        .count());
+        model.addAttribute("livros", livros);
         model.addAttribute("pageTitle", "Catálogo");
 
         return "home";

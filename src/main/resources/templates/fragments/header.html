@@ -40,7 +40,7 @@
 
             <!-- Usuário -->
             <a sec:authorize="hasRole('COMUM')"
-               th:href="@{/meus-emprestimos}"
+               th:href="@{/emprestimos}"
                class="nav-link"
                th:classappend="${activePage == 'meusEmprestimos'} ? ' active'">
                 Meus Empréstimos

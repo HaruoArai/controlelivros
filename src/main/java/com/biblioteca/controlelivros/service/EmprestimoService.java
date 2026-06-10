@@ -24,6 +24,17 @@ public class EmprestimoService {
         this.livroRepository = livroRepository;
     }
 
+    public boolean usuarioJaPossuiSolicitacao(
+            Usuario usuario,
+            Long livroId) {
+
+        return emprestimoRepository
+                .existsEmprestimoAtivoByUsuarioAndLivro(
+                        usuario,
+                        livroId
+                );
+    }
+
     //Usuário solicita empréstimo 
     @Transactional
     public Emprestimo solicitarEmprestimo(Livro livro, Usuario usuario) {
@@ -133,5 +144,13 @@ public class EmprestimoService {
 
     public long contarAtrasados() {
         return getAtivos().stream().filter(Emprestimo::isAtrasado).count();
+    }
+
+    public List<Emprestimo> buscarAtivos(String busca) {
+        return emprestimoRepository.buscarAtivos(busca);
+    }
+
+    public List<Emprestimo> buscarPendentes(String busca) {
+        return emprestimoRepository.buscarPendentes(busca);
     }
 }

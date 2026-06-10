@@ -14,6 +14,10 @@
 
             <div th:if="${mensagemSucesso}" class="alert alert-success" th:text="${mensagemSucesso}">
             </div>
+            <div th:if="${mensagemErro}"
+                 class="alert alert-error"
+                 th:text="${mensagemErro}">
+            </div>
 
             <section class="page-hero">
                 <div class="hero-text">
@@ -38,11 +42,18 @@
             </section>
 
             <section class="search-bar-section">
-                <form class="search-form" th:action="@{/}" method="get">
-                    <span class="search-icon">🔍</span>
-                    <input type="text" name="busca" class="search-input"
-                        placeholder="Pesquisar por título, autor ou gênero..." th:value="${param.busca}">
-                    <button type="submit" class="search-btn">Buscar</button>
+                <form class="search-form" th:action="@{/home}" method="get">
+                    <div class="search-wrapper">
+                        <span class="search-icon">🔍</span>
+                        <input
+                            type="text"
+                            name="busca"
+                            class="search-input"
+                            placeholder="Pesquisar por título, autor ou gênero..."
+                            th:value="${param.busca}">
+                        <button type="submit" class="search-btn">
+                            Buscar
+                        </button>
                     </div>
                 </form>
             </section>
@@ -116,17 +127,37 @@
 
                                 <td class="td-acoes">
 
-                                    <form th:if="${livro.quantidadeDisponivel > 0}"
-                                          th:action="@{/emprestimos/solicitar/{id}(id=${livro.id})}"
-                                          method="post">
+                                    <!-- Já solicitado -->
+                                    <span
+                                        th:if="${#lists.contains(livrosSolicitados, livro.id)}"
+                                        class="badge-solicitado">
+
+                                        Solicitação pendente
+                                    </span>
+
+                                    <!-- Disponível -->
+                                    <form
+                                        th:if="${livro.quantidadeDisponivel > 0
+                                                and !#lists.contains(livrosSolicitados, livro.id)}"
+                                        th:action="@{/emprestimos/solicitar/{id}(id=${livro.id})}"
+                                        method="post"
+                                        onsubmit="return confirm('Deseja solicitar este livro?');">
+
                                         <button type="submit" class="btn-emprestimo">
-                                            Solicitar
+                                            <span class="btn-emprestimo-icon">→</span>
+                                            <span>Solicitar</span>
                                         </button>
                                     </form>
 
-                                    <span th:if="${livro.quantidadeDisponivel == 0}">
-                                        Sem estoque
-                                    </span>
+                                    <!-- Sem estoque -->
+                                    <button
+                                            th:if="${livro.quantidadeDisponivel == 0}"
+                                            class="btn-emprestimo-disabled"
+                                            disabled>
+
+                                        Indisponível
+                                    </button>
+
                                 </td>
                             </tr>
                         </tbody>
