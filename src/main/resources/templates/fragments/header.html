@@ -1,14 +1,16 @@
 <!-- templates/fragments/header.html -->
-<header th:fragment="siteHeader(activePage)" class="site-header">
+<header th:fragment="siteHeader(activePage)"
+        class="site-header"
+        xmlns:sec="http://www.w3.org/1999/xhtml">
     <div class="header-inner">
-        <div class="logo" id="headerLogo">
+        <a th:href="@{/acervo}" class="logo" id="headerLogo">
             <img th:src="@{/img/imagemLivros.png}" alt="Logo Biblioteca" class="logo-icon" width="48" height="48">
 
             <div>
                 <h1 class="logo-title">Biblioteca</h1>
                 <span class="logo-sub">Sistema de Controle de Livros</span>
             </div>
-        </div>
+        </a>
 
         <button type="button"
         class="header-toggle"
@@ -22,7 +24,33 @@
         <nav class="header-nav" id="headerNav">
             <div th:replace="~{fragments/darkswitch :: darkmode}"></div>
 
-            <a th:href="@{/form}" class="btn-primary" th:classappend="${activePage == 'form'} ? ' active'">
+            <a th:href="@{/acervo}"
+               class="nav-link"
+               th:classappend="${activePage == 'acervo'} ? ' active'">
+                Acervo
+            </a>
+
+            <!-- Bibliotecário -->
+            <a sec:authorize="hasRole('BIBLIOTECARIO')"
+               th:href="@{/emprestimos}"
+               class="nav-link"
+               th:classappend="${activePage == 'emprestimos'} ? ' active'">
+                Empréstimos
+            </a>
+
+            <!-- Usuário -->
+            <a sec:authorize="hasRole('COMUM')"
+               th:href="@{/meus-emprestimos}"
+               class="nav-link"
+               th:classappend="${activePage == 'meusEmprestimos'} ? ' active'">
+                Meus Empréstimos
+            </a>
+
+            <!-- BOTÃO SÓ APARECE PARA O BIBLIOTECÁRIO -->
+            <a sec:authorize="hasRole('BIBLIOTECARIO')"
+               th:href="@{/form}"
+               class="btn-primary"
+               th:classappend="${activePage == 'form'} ? ' active'">
                 + Novo Livro
             </a>
 

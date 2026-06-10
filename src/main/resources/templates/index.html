@@ -203,15 +203,15 @@
 
                     <td class="td-isbn" th:text="${livro.isbn}"></td>
 
-                    <td th:text="${livro.quantidade}"></td>
+                    <td th:text="${livro.quantidadeDisponivel}"></td>
 
                     <td>
-                        <span th:if="${livro.quantidade > 0}"
+                        <span th:if="${livro.quantidadeDisponivel > 0}"
                               class="badge badge-naturalismo">
                             Disponível
                         </span>
 
-                        <span th:if="${livro.quantidade == 0}"
+                        <span th:if="${livro.quantidadeDisponivel == 0}"
                               class="badge badge-terror">
                             Indisponível
                         </span>

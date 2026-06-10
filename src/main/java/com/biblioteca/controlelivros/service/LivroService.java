@@ -39,6 +39,14 @@ public class LivroService {
                 .count();
     }
 
+    // CONTAR ESTOQUE
+    public int contarEstoqueTotal() {
+        return livroRepository.findAll()
+                .stream()
+                .mapToInt(Livro::getQuantidadeDisponivel)
+                .sum();
+    }
+
     // BUSCAR POR ID
     public Livro getById(Long id) {return livroRepository.findById(id).orElse(null);}
 
@@ -51,4 +59,5 @@ public class LivroService {
     public List<Livro> buscar(String busca) {
         return livroRepository.buscar(busca);
     }
+
 }

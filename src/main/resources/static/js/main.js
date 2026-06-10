@@ -18,19 +18,6 @@ function fecharModal() {
 
 
 // Função que volta para a tela inicial ao clicar na logo
-const logoHome = () => {
-  /** @type {HTMLDivElement|null} */
-  const element = document.querySelector("#header_logo")
-
-  if (element) {
-    element.style.cursor = 'pointer';
-    element.addEventListener('click', (e) => {
-      window.location.href = "/";
-    })
-  }
-}
-
-
 
 document.addEventListener('DOMContentLoaded', () => {
   logoHome();

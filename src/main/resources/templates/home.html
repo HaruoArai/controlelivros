@@ -104,11 +104,11 @@
                                 <td th:text="${livro.ano}"></td>
 
                                 <td>
-                                    <span th:if="${livro.quantidade > 0}"
+                                    <span th:if="${livro.quantidadeDisponivel > 0}"
                                           class="badge badge-naturalismo">
                                         Disponível
                                     </span>
-                                    <span th:if="${livro.quantidade == 0}"
+                                    <span th:if="${livro.quantidadeDisponivel == 0}"
                                           class="badge badge-terror">
                                         Indisponível
                                     </span>
@@ -116,7 +116,7 @@
 
                                 <td class="td-acoes">
 
-                                    <form th:if="${livro.quantidade > 0}"
+                                    <form th:if="${livro.quantidadeDisponivel > 0}"
                                           th:action="@{/emprestimos/solicitar/{id}(id=${livro.id})}"
                                           method="post">
                                         <button type="submit" class="btn-emprestimo">
@@ -124,7 +124,7 @@
                                         </button>
                                     </form>
 
-                                    <span th:if="${livro.quantidade == 0}">
+                                    <span th:if="${livro.quantidadeDisponivel == 0}">
                                         Sem estoque
                                     </span>
                                 </td>

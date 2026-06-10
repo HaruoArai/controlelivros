@@ -12,7 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.security.core.Authentication;
+import com.biblioteca.controlelivros.service.EmprestimoService;
 
+import java.util.List;
 //@RestController // Indica que é um controller
 
 @Controller // RestController retorna JSON enquanto Controller retorna páginas HTML (usamos
@@ -24,10 +26,12 @@ public class LivroController {
     // injeção de dependência. Controller sabe que o service existe.
     private final LivroService livroService;
     private final UsuarioService usuarioService;
+    private final EmprestimoService emprestimoService;
 
-    public LivroController(LivroService livroService, UsuarioService usuarioService) {
+    public LivroController(LivroService livroService, UsuarioService usuarioService, EmprestimoService emprestimoService) {
         this.livroService = livroService;
         this.usuarioService = usuarioService;
+        this.emprestimoService = emprestimoService;
     }
 
     // rota pra pegar informações do servidor.
@@ -37,19 +41,39 @@ public class LivroController {
             @RequestParam(required = false) String busca,
             Model model) {
 
+        // Criei a váriavel livro para simplificar o filtro Buscar
+        List<Livro> livros;
+
         if (busca != null && !busca.isBlank()) {
-            model.addAttribute("livros",
-                    livroService.buscar(busca));
+            livros = livroService.buscar(busca);
         } else {
-            model.addAttribute("livros",
-                    livroService.getAll());
+            livros = livroService.getAll();
         }
 
+        model.addAttribute("livros", livros);
+
         model.addAttribute("totalAutores",
-                livroService.contarAutores());
+                livros.stream()
+                        .map(Livro::getAutor)
+                        .distinct()
+                        .count());
 
         model.addAttribute("totalGeneros",
-                livroService.contarGeneros());
+                livros.stream()
+                        .map(Livro::getGenero)
+                        .distinct()
+                        .count());
+
+        model.addAttribute("totalEstoque",
+                livros.stream()
+                        .mapToInt(Livro::getQuantidadeDisponivel)
+                        .sum());
+
+        model.addAttribute("emprestimosAtivos",
+                emprestimoService.contarAtivos());
+
+        model.addAttribute("emprestimosPendentes",
+                emprestimoService.contarPendentes());
 
         return "index";
     }
@@ -101,7 +125,7 @@ public class LivroController {
                     "Livro cadastrado com sucesso!");
         }
 
-        return "redirect:/index";
+        return "redirect:/";
     } // pega a informação enviada no corpo da requisição (Livro) e salva.
 
     // EXCLUIR
@@ -130,4 +154,20 @@ public class LivroController {
 
         return "form";
     }
+
+    // Método para redirecionar bibliocário e user para seus respectivos menus
+    @GetMapping("/acervo")
+    public String acervo(Authentication authentication) {
+
+        boolean bibliotecario = authentication.getAuthorities()
+                .stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_BIBLIOTECARIO"));
+
+        if (bibliotecario) {
+            return "redirect:/";
+        }
+
+        return "redirect:/home";
+    }
+
 }

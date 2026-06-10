@@ -32,7 +32,7 @@ public class SecurityConfig {
                         .loginProcessingUrl("/login")
                         .usernameParameter("email")
                         .passwordParameter("senha")
-                        .defaultSuccessUrl("/", true)
+                        .successHandler(loginSuccessHandler)
                         .failureUrl("/login?error=true")
                         .permitAll()
                 )
@@ -55,4 +55,11 @@ public class SecurityConfig {
         builder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
         return builder.build();
     }
+
+    private final LoginSuccessHandler loginSuccessHandler;
+
+    public SecurityConfig(LoginSuccessHandler loginSuccessHandler) {
+        this.loginSuccessHandler = loginSuccessHandler;
+    }
+
 }

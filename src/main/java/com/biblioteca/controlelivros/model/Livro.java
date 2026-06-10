@@ -24,14 +24,13 @@ public class Livro {
     private String isbn;
     private Integer estoque = 0;
     private Integer quantidadeEmprestada = 0;
-    private Integer quantidade;
 
     // Construtor vazio
     public Livro() {
     }
 
     // Construtor com parâmetros
-    public Livro(Long id, String titulo, String autor, String genero, Integer ano, String isbn, Integer estoque, Integer quantidadeEmprestada, Integer quantidade) {
+    public Livro(Long id, String titulo, String autor, String genero, Integer ano, String isbn, Integer estoque, Integer quantidadeEmprestada) {
         this.id=id;
         this.titulo=titulo;
         this.autor=autor;
@@ -40,7 +39,6 @@ public class Livro {
         this.isbn=isbn;
         this.estoque=estoque;
         this.quantidadeEmprestada=quantidadeEmprestada;
-        this.quantidade=quantidade;
     }
 
     // Getter para retornar valores e Setter para alterar os valores
@@ -98,11 +96,4 @@ public class Livro {
 
     public boolean isDisponivel() { return getQuantidadeDisponivel() > 0; }
 
-    public Integer getQuantidade() {
-        return quantidade;
-    }
-
-    public void setQuantidade(Integer quantidade) {
-        this.quantidade = quantidade;
-    }
 }
