@@ -19,7 +19,13 @@ public class LivroService {
     // método público que vai listar todos os livros
     // findAll vai listar tudo que passar no livroRepository
     // método LISTAR
-    public List<Livro> getAll () {return livroRepository.findAll();}
+    public List<Livro> getAll() {
+        return livroRepository.findAll()
+                .stream()
+                .sorted((l1, l2) ->
+                        l1.getTitulo().compareToIgnoreCase(l2.getTitulo()))
+                .toList();
+    }
 
     // CONTAR AUTORES ÚNICOS
     public long contarAutores() {
@@ -57,7 +63,12 @@ public class LivroService {
     public void delete(Long id){livroRepository.deleteById(id);}
 
     public List<Livro> buscar(String busca) {
-        return livroRepository.buscar(busca);
+        return livroRepository.buscar(busca)
+                .stream()
+                .sorted((l1, l2) ->
+                        l1.getTitulo().compareToIgnoreCase(l2.getTitulo()))
+                .toList();
     }
+
 
 }

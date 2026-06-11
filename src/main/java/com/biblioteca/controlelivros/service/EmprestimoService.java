@@ -154,17 +154,25 @@ public class EmprestimoService {
     }
 
     public List<Emprestimo> getTodosComPendentesNoTopo() {
-        List<Emprestimo> todos = emprestimoRepository.findAllByOrderByDataSolicitacaoDesc();
-        List<Emprestimo> urgentes = todos.stream()
-                .filter(e -> e.getStatus() == Status.PENDENTE || e.getStatus() == Status.PRORROGACAO_SOLICITADA)
+        List<Emprestimo> todos =
+                emprestimoRepository.findAllByOrderByDataSolicitacaoDesc();
+        List<Emprestimo> pendentes = todos.stream()
+                .filter(e -> e.getStatus() == Status.PENDENTE)
+                .toList();
+        List<Emprestimo> prorrogacoes = todos.stream()
+                .filter(e -> e.getStatus() == Status.PRORROGACAO_SOLICITADA)
                 .toList();
         List<Emprestimo> demais = todos.stream()
-                .filter(e -> e.getStatus() != Status.PENDENTE && e.getStatus() != Status.PRORROGACAO_SOLICITADA)
+                .filter(e ->
+                        e.getStatus() != Status.PENDENTE
+                                && e.getStatus() != Status.PRORROGACAO_SOLICITADA)
                 .toList();
-        List<Emprestimo> result = new java.util.ArrayList<>();
-        result.addAll(urgentes);
-        result.addAll(demais);
-        return result;
+        List<Emprestimo> resultado = new java.util.ArrayList<>();
+        resultado.addAll(pendentes);
+        resultado.addAll(prorrogacoes);
+        resultado.addAll(demais);
+
+        return resultado;
     }
 
     public List<Emprestimo> getPendentes() {
@@ -185,21 +193,41 @@ public class EmprestimoService {
     }
 
     public List<Emprestimo> doUsuarioComPendentesNoTopo(Usuario usuario) {
-        List<Emprestimo> todos = emprestimoRepository.findByUsuarioOrderByDataSolicitacaoDesc(usuario);
-        List<Emprestimo> urgentes = todos.stream()
-                .filter(e -> e.getStatus() == Status.PENDENTE || e.getStatus() == Status.PRORROGACAO_SOLICITADA)
+        List<Emprestimo> todos =
+                emprestimoRepository.findByUsuarioOrderByDataSolicitacaoDesc(usuario);
+        List<Emprestimo> pendentes = todos.stream()
+                .filter(e -> e.getStatus() == Status.PENDENTE)
+                .toList();
+        List<Emprestimo> prorrogacoes = todos.stream()
+                .filter(e -> e.getStatus() == Status.PRORROGACAO_SOLICITADA)
                 .toList();
         List<Emprestimo> demais = todos.stream()
-                .filter(e -> e.getStatus() != Status.PENDENTE && e.getStatus() != Status.PRORROGACAO_SOLICITADA)
+                .filter(e ->
+                        e.getStatus() != Status.PENDENTE
+                                && e.getStatus() != Status.PRORROGACAO_SOLICITADA)
                 .toList();
         List<Emprestimo> result = new java.util.ArrayList<>();
-        result.addAll(urgentes);
+        result.addAll(pendentes);
+        result.addAll(prorrogacoes);
         result.addAll(demais);
+
         return result;
     }
 
     public List<Emprestimo> buscar(String busca) {
         return emprestimoRepository.buscar(busca);
+    }
+
+    public List<Emprestimo> buscarDoUsuario(String busca, Usuario usuario) {
+
+        return doUsuarioComPendentesNoTopo(usuario)
+                .stream()
+                .filter(e ->
+                        e.getLivro().getTitulo().toLowerCase().contains(busca.toLowerCase())
+                                ||
+                                e.getLivro().getAutor().toLowerCase().contains(busca.toLowerCase())
+                )
+                .toList();
     }
 
     public Emprestimo getById(Long id) {

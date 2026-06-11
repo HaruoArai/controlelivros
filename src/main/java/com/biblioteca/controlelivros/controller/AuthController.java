@@ -15,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import jakarta.servlet.http.HttpServletRequest;
 
 import com.biblioteca.controlelivros.model.ValidationGroups;
 import jakarta.servlet.http.HttpSession;
@@ -100,7 +101,8 @@ public class AuthController {
     public String updateProfile(Usuario usuario,
             BindingResult result,
             Authentication authentication,
-            Model model) {
+            Model model,
+            HttpServletRequest request) {
         String emailAtual = authentication.getName();
         Usuario usuarioAtual = usuarioService.findByEmail(emailAtual).orElse(null);
 
@@ -150,9 +152,10 @@ public class AuthController {
             usuarioService.update(usuarioAtual);
         }
 
-        model.addAttribute("successMessage", "Perfil atualizado com sucesso!");
-        model.addAttribute("usuario", usuarioAtual);
+        request.getSession().invalidate();
 
-        return "profile";
+        SecurityContextHolder.clearContext();
+
+        return "redirect:/login";
     }
 }

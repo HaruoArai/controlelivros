@@ -70,11 +70,23 @@ public class LivroController {
                         .mapToInt(Livro::getQuantidadeDisponivel)
                         .sum());
 
-        model.addAttribute("emprestimosAtivos",
-                emprestimoService.contarAtivos());
+        // Emprestados (somente dos livros filtrados)
+        long emprestimosAtivos = livros.stream()
+                .mapToLong(livro ->
+                        livro.getQuantidadeEmprestada() != null
+                                ? livro.getQuantidadeEmprestada()
+                                : 0)
+                .sum();
+        model.addAttribute("emprestimosAtivos", emprestimosAtivos);
 
-        model.addAttribute("emprestimosPendentes",
-                emprestimoService.contarPendentes());
+        // Pendentes (somente dos livros filtrados)
+        long emprestimosPendentes = emprestimoService.getPendentes()
+                .stream()
+                .filter(e ->
+                        livros.stream()
+                                .anyMatch(l -> l.getId().equals(e.getLivro().getId())))
+                .count();
+        model.addAttribute("emprestimosPendentes", emprestimosPendentes);
 
         return "index";
     }

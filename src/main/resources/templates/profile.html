@@ -15,7 +15,10 @@
             <section class="form-section">
                 <div class="form-container">
                     <div class="form-heading">
-                        <a href="/" class="back-link">← Voltar ao Acervo</a>
+                        <a th:href="${usuario.role.name() == 'BIBLIOTECARIO'} ? @{/} : @{/home}"
+                           class="back-link">
+                            ← Voltar ao Acervo
+                        </a>
                         <h2 class="form-title">Meu Perfil</h2>
                         <p class="form-desc">Edite seus dados pessoais e configurações.</p>
                     </div>
@@ -77,7 +80,10 @@
                         </div>
 
                         <div class="form-actions">
-                            <a href="/" class="btn-secondary">Cancelar</a>
+                            <a th:href="${usuario.role.name() == 'BIBLIOTECARIO'} ? @{/} : @{/home}"
+                               class="btn-secondary">
+                                Cancelar
+                            </a>
                             <button type="submit" class="btn-submit">Salvar Alterações</button>
                         </div>
                     </form>

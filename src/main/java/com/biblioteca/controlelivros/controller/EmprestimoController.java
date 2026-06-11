@@ -67,26 +67,117 @@ public class EmprestimoController {
                 lista = emprestimoService.getTodosComPendentesNoTopo();
             }
 
-            model.addAttribute("totalPendentes", emprestimoService.contarPendentes());
-            model.addAttribute("totalAtivos", emprestimoService.contarAtivos());
-            model.addAttribute("totalAtrasados", emprestimoService.contarAtrasados());
-            model.addAttribute("totalProrrogacoes", emprestimoService.contarProrrogacoesPendentes());
+            model.addAttribute("totalPendentes",
+                    lista.stream()
+                            .filter(e -> e.getStatus() == Emprestimo.Status.PENDENTE)
+                            .count());
+            model.addAttribute("totalProrrogacoes",
+                    lista.stream()
+                            .filter(e -> e.getStatus() == Emprestimo.Status.PRORROGACAO_SOLICITADA)
+                            .count());
+            model.addAttribute("totalAtivos",
+                    lista.stream()
+                            .filter(e ->
+                                    e.getStatus() == Emprestimo.Status.APROVADO ||
+                                            e.getStatus() == Emprestimo.Status.PRORROGACAO_SOLICITADA)
+                            .count());
+            model.addAttribute("totalAtrasados",
+                    lista.stream()
+                            .filter(e ->
+                                    (e.getStatus() == Emprestimo.Status.APROVADO ||
+                                            e.getStatus() == Emprestimo.Status.PRORROGACAO_SOLICITADA)
+                                            && e.isAtrasado())
+                            .count());
         } else {
-            lista = emprestimoService.doUsuarioComPendentesNoTopo(logado);
 
-            List<Emprestimo> todos = lista;
-            model.addAttribute("userTotalPendentes",  todos.stream().filter(e -> e.getStatus() == Emprestimo.Status.PENDENTE).count());
-            model.addAttribute("userTotalAtivos",     todos.stream().filter(e -> (e.getStatus() == Emprestimo.Status.APROVADO || e.getStatus() == Emprestimo.Status.PRORROGACAO_SOLICITADA) && !e.isAtrasado()).count());
-            model.addAttribute("userTotalAtrasados",  todos.stream().filter(e -> (e.getStatus() == Emprestimo.Status.APROVADO || e.getStatus() == Emprestimo.Status.PRORROGACAO_SOLICITADA) && e.isAtrasado()).count());
-            model.addAttribute("userTotalDevolvidos", todos.stream().filter(e -> e.getStatus() == Emprestimo.Status.DEVOLVIDO).count());
-            model.addAttribute("userTotalRecusados",  todos.stream().filter(e -> e.getStatus() == Emprestimo.Status.RECUSADO).count());
+            if (busca != null && !busca.isBlank()) {
+                lista = emprestimoService.buscarDoUsuario(busca, logado);
+            } else {
+                lista = emprestimoService.doUsuarioComPendentesNoTopo(logado);
+            }
+
+            if (filtro != null) {
+
+                switch (filtro) {
+
+                    case "pendentes":
+                        lista = lista.stream()
+                                .filter(e -> e.getStatus() == Emprestimo.Status.PENDENTE)
+                                .toList();
+                        break;
+
+                    case "prorrogacoes":
+                        lista = lista.stream()
+                                .filter(e -> e.getStatus() == Emprestimo.Status.PRORROGACAO_SOLICITADA)
+                                .toList();
+                        break;
+
+                    case "ativos":
+                        lista = lista.stream()
+                                .filter(e ->
+                                        e.getStatus() == Emprestimo.Status.APROVADO ||
+                                                e.getStatus() == Emprestimo.Status.PRORROGACAO_SOLICITADA)
+                                .toList();
+                        break;
+
+                    case "devolvidos":
+                        lista = lista.stream()
+                                .filter(e -> e.getStatus() == Emprestimo.Status.DEVOLVIDO)
+                                .toList();
+                        break;
+
+                    case "recusados":
+                        lista = lista.stream()
+                                .filter(e -> e.getStatus() == Emprestimo.Status.RECUSADO)
+                                .toList();
+                        break;
+
+                    case "atrasados":
+                        lista = lista.stream()
+                                .filter(Emprestimo::isAtrasado)
+                                .toList();
+                        break;
+                }
+            }
+
+            model.addAttribute("userTotalPendentes",
+                    lista.stream()
+                            .filter(e -> e.getStatus() == Emprestimo.Status.PENDENTE)
+                            .count());
+
+            model.addAttribute("userTotalAtivos",
+                    lista.stream()
+                            .filter(e ->
+                                    (e.getStatus() == Emprestimo.Status.APROVADO ||
+                                            e.getStatus() == Emprestimo.Status.PRORROGACAO_SOLICITADA)
+                                            && !e.isAtrasado())
+                            .count());
+
+            model.addAttribute("userTotalAtrasados",
+                    lista.stream()
+                            .filter(e ->
+                                    (e.getStatus() == Emprestimo.Status.APROVADO ||
+                                            e.getStatus() == Emprestimo.Status.PRORROGACAO_SOLICITADA)
+                                            && e.isAtrasado())
+                            .count());
+
+            model.addAttribute("userTotalDevolvidos",
+                    lista.stream()
+                            .filter(e -> e.getStatus() == Emprestimo.Status.DEVOLVIDO)
+                            .count());
+
+            model.addAttribute("userTotalRecusados",
+                    lista.stream()
+                            .filter(e -> e.getStatus() == Emprestimo.Status.RECUSADO)
+                            .count());
         }
 
-        model.addAttribute("emprestimos", lista);
-        model.addAttribute("busca", busca);
-        model.addAttribute("filtro", filtro);
-        return "emprestimos";
-    }
+            model.addAttribute("emprestimos", lista);
+            model.addAttribute("busca", busca);
+            model.addAttribute("filtro", filtro);
+
+            return "emprestimos";
+        }
 
     // Usuário solicita empréstimo de um livro
     @PostMapping("/solicitar/{livroId}")

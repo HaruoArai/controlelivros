@@ -149,6 +149,12 @@ main#main_content {
     width: 100%;
 }
 
+.emprestimos-page {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
 /* ======= HERO ======= */
 .page-hero {
     display: flex;
@@ -1193,7 +1199,7 @@ html.dark ::-webkit-scrollbar-thumb:hover {
 .emp-table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 900px;
+    table-layout: auto;
 }
 .emp-table thead {
     background: var(--ink);
@@ -1225,51 +1231,195 @@ html.dark ::-webkit-scrollbar-thumb:hover {
 }
 
 /* EMPRESTIMOS */
-.emp-table thead th:nth-child(4),
-.emp-table tbody td:nth-child(4) {
-    display: none;
-}
-.emp-table thead th:nth-child(5),
-.emp-table tbody td:nth-child(5) {
-    display: none;
-}
 
 .emp-table td:last-child {
     white-space: nowrap;
 }
 
-.badge-status { padding:.25rem .7rem; border-radius:20px; font-size:.76rem; font-weight:600; text-transform:uppercase; letter-spacing:.04em; white-space:nowrap; }
-.badge-pendente  { background:#fff3cd; color:#856404; border:1px solid #ffc107; }
-.badge-aprovado  { background:#d4edda; color:#155724; border:1px solid #28a745; }
-.badge-devolvido { background:#e2e3e5; color:#383d41; border:1px solid #adb5bd; }
-.badge-recusado  { background:#f8d7da; color:#721c24; border:1px solid #dc3545; }
-.badge-atrasado  { background:#fde2e2; color:#a94442; border:1px solid var(--red); font-weight:700; }
-
-.btn-aprovar, .btn-recusar, .btn-devolver {
-    padding:.3rem .8rem; border-radius:6px; border:none; cursor:pointer;
-    font-size:.8rem; font-weight:600; margin-right:.25rem;
-    transition:var(--transition);
+.badge-status {
+    display: inline-block;
+    min-width: 110px;
+    padding: .3rem .7rem;
+    border-radius: 20px;
+    font-size: .76rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    white-space: nowrap;
+    text-align: center;
 }
-.btn-aprovar  { background:var(--green); color:#fff; }
-.btn-aprovar:hover { background:#219a52; }
-.btn-recusar  { background:var(--red); color:#fff; }
-.btn-recusar:hover { background:#a93226; }
-.btn-devolver { background:var(--blue); color:#fff; }
-.btn-devolver:hover { background:#2471a3; }
+
+.badge-pendente    { background:#fff3cd; color:#856404; border:1px solid #ffc107; }
+.badge-aprovado    { background:#d4edda; color:#155724; border:1px solid #28a745; }
+.badge-prorrogacao { background:#fdf2e9; color:#9c5b14; border:1px solid #ca6f1e; }
+.badge-devolvido   { background:#e2e3e5; color:#383d41; border:1px solid #adb5bd; }
+.badge-recusado    { background:#f8d7da; color:#721c24; border:1px solid #dc3545; }
+.badge-atrasado    { background:#fde2e2; color:#a94442; border:1px solid var(--red); }
 
 .btn-aprovar,
 .btn-recusar,
-.btn-devolver {
+.btn-devolver,
+.btn-aprovar-prorrogacao {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: .35rem;
+    text-decoration: none;
+    white-space: nowrap;
+
+    padding: .55rem .95rem;
+
+    border: none;
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-size: .82rem;
+    font-weight: 600;
+
+    transition: all .2s ease;
+
+    box-shadow: 0 2px 6px rgba(0,0,0,.06);
 }
 
-.prazo-input { width:70px; text-align: center; border:1px solid var(--border); border-radius:6px; padding:.25rem .4rem; font-size:.82rem; }
+.btn-aprovar:hover,
+.btn-recusar:hover,
+.btn-devolver:hover,
+.btn-aprovar-prorrogacao:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.05);
+}
+
+.btn-aprovar:active,
+.btn-recusar:active,
+.btn-devolver:active,
+.btn-aprovar-prorrogacao:active {
+    transform: translateY(0);
+}
+
+.btn-aprovar {
+    background: var(--green);
+    color: white;
+}
+
+.btn-aprovar:hover {
+    box-shadow: 0 4px 10px rgba(39,174,96,.25);
+}
+
+.btn-recusar {
+    background: var(--red);
+    color: white;
+}
+
+.btn-recusar:hover {
+    box-shadow: 0 4px 10px rgba(192,57,43,.25);
+}
+
+.btn-devolver {
+    background: var(--blue);
+    color: white;
+}
+
+.btn-devolver:hover {
+    box-shadow: 0 4px 10px rgba(41,128,185,.25);
+}
+
+.btn-aprovar-prorrogacao {
+    background: var(--brown);
+    color: white;
+}
+
+.btn-aprovar-prorrogacao:hover {
+    box-shadow: 0 4px 10px rgba(139,105,20,.25);
+}
+
+.prazo-input {
+    width: 65px;
+    padding: .45rem;
+
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+
+    text-align: center;
+    font-weight: 600;
+
+    transition: var(--transition);
+}
+
+.prazo-input:focus {
+    outline: none;
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(52,152,219,.15);
+}
+
 .empty-state { text-align:center; padding:3rem 1rem; color:#888; }
 .empty-state .icon { font-size:2.5rem; margin-bottom:.5rem; }
 
 .alert-err { background:#f8d7da; color:#721c24; border:1px solid #f5c6cb; border-radius:var(--radius); padding:.85rem 1.2rem; margin-bottom:1.2rem; }
+
+/* ===== PRORROGAÇÃO ===== */
+
+.btn-prorrogar {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+
+    padding: .55rem 1rem;
+
+    border: none;
+    border-radius: 999px;
+
+    background: linear-gradient(
+            135deg,
+            var(--blue),
+            #4aa3df
+    );
+
+    color: #fff;
+    font-size: .82rem;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: all .25s ease;
+
+    box-shadow: 0 4px 12px rgba(41,128,185,.25);
+}
+
+.btn-prorrogar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(41,128,185,.35);
+}
+
+.btn-prorrogar:active {
+    transform: translateY(0);
+}
+
+.btn-prorrogar:hover {
+    background: linear-gradient(
+            135deg,
+            #2471a3,
+            var(--blue)
+    );
+}
+
+.prorrogacao-form {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    flex-wrap: wrap;
+}
+
+.prorrogacao-form .prazo-input {
+    width: 65px;
+    text-align: center;
+
+    padding: .45rem;
+
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+
+    font-weight: 600;
+}
 
 /* ======= HEADER ======= */
 
